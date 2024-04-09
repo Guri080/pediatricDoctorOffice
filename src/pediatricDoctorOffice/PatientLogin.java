@@ -34,6 +34,7 @@ public class PatientLogin {
 	        TextField passwordTextField = new TextField();
 	        
 	        Button loginBtn = new Button("Log in");
+	        Button newPatient = new Button("Create an account");
 	        
 	        
 	        loginLabel.setFont(largeBoldFont);
@@ -49,6 +50,8 @@ public class PatientLogin {
 				stage.close();
 				patientLoginGUI.start(new Stage());
 			});
+	        
+	        
 	        
 	        
 	        

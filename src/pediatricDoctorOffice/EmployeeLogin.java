@@ -22,53 +22,57 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 
-
-
 public class EmployeeLogin {
 	public static final int WIDTH = 700, HEIGHT = 450;
-	 public void start(Stage stage) {
-	        stage.setTitle("Employee Login");
-	        StackPane root = new StackPane();
-	        Scene scene = new Scene(root, WIDTH, HEIGHT);
-	        stage.setScene(scene);
-	        
-	        Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
-	        Font largeFont = Font.font("Arial", 15);
-	        
-	        VBox setUp = new VBox();
 
-	        /*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
-	        Label loginLabel = new Label("Employee Login");
-	        Label IDLabel = new Label("Employee ID:");
-	        TextField IDTextField = new TextField();
-	        
-	        Label passwordLabel = new Label("Password:");
-	        TextField passwordTextField = new TextField();
-	        
-	        Button loginBtn = new Button("Log in");
-	        
-	        
-	        loginLabel.setFont(largeBoldFont);
-	        IDTextField.setPrefWidth(160); // Adjust width as needed
-	        IDTextField.setMaxWidth(160);
-	        passwordTextField.setPrefWidth(160); // Adjust width as needed
-	        passwordTextField.setMaxWidth(160);
-	        
-	        loginBtn.setFont(largeFont);
-	        /*-----------------------------------------------------------------------------------------------------*/
-	        loginBtn.setOnAction(event -> { //when employee login button is clicked
-				EmployeePortal employeeLoginGUI = new EmployeePortal();
+	public void start(Stage stage) {
+		stage.setTitle("Employee Login");
+		StackPane root = new StackPane();
+		Scene scene = new Scene(root, WIDTH, HEIGHT);
+		stage.setScene(scene);
+
+		Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
+		Font largeFont = Font.font("Arial", 15);
+
+		VBox setUp = new VBox();
+
+		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
+		Label loginLabel = new Label("Employee Login");
+		Label IDLabel = new Label("Employee ID (enter 1 for doc view and 2 for nurse view):");
+		TextField IDTextField = new TextField();
+
+		Label passwordLabel = new Label("Password:");
+		TextField passwordTextField = new TextField();
+
+		Button loginBtn = new Button("Log in");
+
+		loginLabel.setFont(largeBoldFont);
+		IDTextField.setPrefWidth(160); // Adjust width as needed
+		IDTextField.setMaxWidth(160);
+		passwordTextField.setPrefWidth(160); // Adjust width as needed
+		passwordTextField.setMaxWidth(160);
+
+		loginBtn.setFont(largeFont);
+		/*-----------------------------------------------------------------------------------------------------*/
+		loginBtn.setOnAction(event -> { // when employee login button is clicked
+			if (IDTextField.getText().isEmpty()) {
+				System.out.println("add something to the ID textField");
+			} else if (IDTextField.getText().equals("1")) {
+				PediatricView employeeLoginGUI = new PediatricView();
 				stage.close();
 				employeeLoginGUI.start(new Stage());
-			});
-	        
-	        
-	        
-	        setUp.setPadding(new Insets(80)); 
-	        setUp.setAlignment(Pos.TOP_CENTER);
-	        setUp.setSpacing(10);
-	        setUp.getChildren().addAll(loginLabel, IDLabel, IDTextField, passwordLabel, passwordTextField, loginBtn);
-	        root.getChildren().add(setUp);
-	        stage.show();
-	    }
+			} else {
+				NursePortal employeeLoginGUI = new NursePortal();
+				stage.close();
+				employeeLoginGUI.start(new Stage());
+			}
+		});
+
+		setUp.setPadding(new Insets(80));
+		setUp.setAlignment(Pos.TOP_CENTER);
+		setUp.setSpacing(10);
+		setUp.getChildren().addAll(loginLabel, IDLabel, IDTextField, passwordLabel, passwordTextField, loginBtn);
+		root.getChildren().add(setUp);
+		stage.show();
+	}
 }
