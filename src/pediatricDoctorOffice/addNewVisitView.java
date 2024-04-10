@@ -61,7 +61,7 @@ public class addNewVisitView {
 		root.getChildren().add(setUp);
 		stage.show();
 	}
-	void newPInit(String bday, String name, String height, String temp, String age, String bp, String nn) {
+	void newPInit(String bday, String name, String height, String temp, String age, String bp, String date, String nn) {
 		String str = name + bday;
 		str = str.replaceAll("\\s", "");
 		str = str.replaceAll("/", "");
@@ -71,7 +71,7 @@ public class addNewVisitView {
 		String nstr = ""
 				+ "src/PatientLogins/" + patientID + "_login";
 		
-		String patientD = height + "," + temp + "," + age + "," + bp + "," + nn;
+		String patientD = date + "," +height + "," + temp + "," + age + "," + bp + "," + nn;
 		
 		try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(str));
@@ -135,8 +135,9 @@ public class addNewVisitView {
 		Label ageLabel = new Label("Enter age: ");
 		Label bodyTempIDLabel = new Label("Enter body temprature: ");
 		Label bloodPressureLabel = new Label("Enter blood pressure: ");
-		Label nurseNotesLabel = new Label("Nurse Notes");
+		Label nurseNotesLabel = new Label("Nurse Notes: ");
 		Label errorLabel = new Label("");
+		Label dateLabel = new Label("Enter date of visit (mm/dd/yyyy): ");
 		
 		TextField nameField = new TextField();
 		TextField bdayField = new TextField();
@@ -145,6 +146,8 @@ public class addNewVisitView {
 		TextField bodyTempIDField = new TextField();
 		TextField bloodPressureField = new TextField();
 		TextField nurseNotesField = new TextField(); 
+		TextField dateField = new TextField();
+		
 
 		Button saveBtn = new Button("Save");
 		Button backBtn = new Button("Go back");
@@ -153,7 +156,7 @@ public class addNewVisitView {
 		/*---------------------------------------------------------------------------------------*/
 		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
 			try {
-				if (heightField.getText().isEmpty() ||bdayField.getText().isEmpty() || nameField.getText().isEmpty() ||bodyTempIDField.getText().isEmpty()|| bloodPressureField.getText().isEmpty()) {
+				if (heightField.getText().isEmpty() || dateField.getText().isEmpty()||bdayField.getText().isEmpty() || nameField.getText().isEmpty() ||bodyTempIDField.getText().isEmpty()|| bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! One or more fields are empty");
 				} else if (Double.parseDouble(ageField.getText()) < 12) {
@@ -167,7 +170,8 @@ public class addNewVisitView {
 					String age = ageField.getText();
 					String bp = bloodPressureField.getText();
 					String nn = nurseNotesField.getText();
-					newPInit(bday, name, height, temp, age, bp, nn);//**
+					String date = dateField.getText().replaceAll("/", "");
+					newPInit(bday, name, height, temp, age, bp, date,nn);//**
 					heightField.clear();
 					ageField.clear();
 					bodyTempIDField.clear();
@@ -205,6 +209,8 @@ public class addNewVisitView {
 		gridPane.add(ageField, 1, 6);
 		gridPane.add(nurseNotesLabel, 0, 7);
 		gridPane.add(nurseNotesField, 1, 7);
+		gridPane.add(dateLabel, 0, 8);
+		gridPane.add(dateField, 1, 8);
 //		gridPane.add(insuranceIDLabel, 0, 5);
 //		gridPane.add(insuranceIDText, 1, 5);
 
@@ -235,8 +241,9 @@ public class addNewVisitView {
 		Label ageLabel = new Label("Enter age: ");
 		Label bodyTempIDLabel = new Label("Enter body temperature: ");
 		Label bloodPressureLabel = new Label("Enter blood pressure: ");
-		Label nurseNotesLabel = new Label("Nurse Notes");
+		Label nurseNotesLabel = new Label("Nurse Notes: ");
 		Label errorLabel = new Label("");
+		Label dateLabel = new Label("Enter date of visit (mm/dd/yyyy): ");
 
 		TextField nameField = new TextField();
 		TextField bdayField = new TextField();
@@ -245,6 +252,7 @@ public class addNewVisitView {
 		TextField bodyTempIDField = new TextField();
 		TextField bloodPressureField = new TextField();
 		TextField nurseNotesField = new TextField();
+		TextField dateField = new TextField();
 
 		Button backBtn = new Button("Go back");
 		Button saveBtn = new Button("Save");
@@ -267,7 +275,8 @@ public class addNewVisitView {
 					String age = ageField.getText();
 					String bp = bloodPressureField.getText();
 					String nn = nurseNotesField.getText();
-					existingPVisit(bday, name, height,temp, age, bp, nn, errorLabel);
+					String date = dateField.getText().replaceAll("/", "");
+					existingPVisit(bday, name, height,temp, age, bp, nn, date, errorLabel);
 					heightField.clear();
 					ageField.clear();
 					bodyTempIDField.clear();
@@ -305,8 +314,8 @@ public class addNewVisitView {
 		gridPane.add(ageField, 1, 5);
 		gridPane.add(nurseNotesLabel, 0, 7);
 		gridPane.add(nurseNotesField, 1, 7);
-//		gridPane.add(insuranceIDLabel, 0, 5);
-//		gridPane.add(insuranceIDText, 1, 5);
+		gridPane.add(dateLabel, 0, 8);
+		gridPane.add(dateField, 1, 8);
 
 		gridPane.setAlignment(Pos.CENTER_LEFT);
 		gridPane.setHgap(10);
@@ -320,7 +329,7 @@ public class addNewVisitView {
 		stage.show();
 	}
 	
-	void existingPVisit(String bday, String name, String height, String temp, String age, String bp, String nn,Label eL) {
+	void existingPVisit(String bday, String name, String height, String temp, String age, String bp,String nn,String date,Label eL) {
 		String str = name + bday;
 		str = str.replaceAll("\\s", "");
 		str = str.replaceAll("/", "");
@@ -328,7 +337,7 @@ public class addNewVisitView {
 		
 		str = "src/PatientData/" + str + "_data";
 		
-		String patientD = height + "," + temp + "," + age + "," + bp + "," + nn;
+		String patientD = date + "," + height + "," + temp + "," + age + "," + bp + "," + nn;
 		
 		try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(str, true));
