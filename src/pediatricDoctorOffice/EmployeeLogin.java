@@ -45,7 +45,7 @@ public class EmployeeLogin {
 		TextField passwordTextField = new TextField();
 
 		Button loginBtn = new Button("Log in");
-
+		Button createAccount = new Button("Create an account");
 		loginLabel.setFont(largeBoldFont);
 		IDTextField.setPrefWidth(160); // Adjust width as needed
 		IDTextField.setMaxWidth(160);
@@ -67,6 +67,8 @@ public class EmployeeLogin {
 				employeeLoginGUI.start(new Stage());
 			}
 		});
+		
+		createAccount.setOnAction(e->createNewAccount(stage));
 
 		setUp.setPadding(new Insets(80));
 		setUp.setAlignment(Pos.TOP_CENTER);
@@ -74,5 +76,11 @@ public class EmployeeLogin {
 		setUp.getChildren().addAll(loginLabel, IDLabel, IDTextField, passwordLabel, passwordTextField, loginBtn);
 		root.getChildren().add(setUp);
 		stage.show();
+	}
+	
+	void createNewAccount(Stage oldStage) {
+		oldStage.close();
+		
+		
 	}
 }
