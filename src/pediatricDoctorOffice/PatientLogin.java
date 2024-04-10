@@ -181,7 +181,7 @@ public class PatientLogin {
 		String filePath = "src/PatientData/" + str + "_data";
 
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 			writer.write("," + password);
 			writer.close();
 		} catch (IOException e) {
