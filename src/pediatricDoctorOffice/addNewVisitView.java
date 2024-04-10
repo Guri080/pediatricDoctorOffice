@@ -68,7 +68,8 @@ public class addNewVisitView {
 		nn = nn.replaceAll(",", "");
 		String patientID = str;
 		str = "src/PatientData/" + str + "_data";
-		String nstr = "src/PatientLogins/" + patientID + "_login";
+		String nstr = ""
+				+ "src/PatientLogins/" + patientID + "_login";
 		
 		String patientD = height + "," + temp + "," + age + "," + bp + "," + nn;
 		

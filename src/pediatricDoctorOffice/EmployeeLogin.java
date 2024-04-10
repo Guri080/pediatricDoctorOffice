@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package pediatricDoctorOffice;
 
 import javafx.application.Application;
@@ -18,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.ToggleGroup;
@@ -37,131 +37,68 @@ public class EmployeeLogin {
 
 		VBox setUp = new VBox();
 
+		String[] doctorAccessCode = { "do11", "do12", "do13", "do14" };
+		String[] nurseAccessCode = { "nu11", "nu12", "nu13", "nu14" };
+
 		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
 		Label loginLabel = new Label("Employee Login");
-		Label IDLabel = new Label("Employee ID (enter 1 for doc view and 2 for nurse view):");
-		TextField IDTextField = new TextField();
+		Label passwordLabel = new Label("Enter your employee access code:");
+		Label errorLabel = new Label("");
 
-		Label passwordLabel = new Label("Password:");
-		TextField passwordTextField = new TextField();
+		PasswordField passwordTextField = new PasswordField();
 
 		Button loginBtn = new Button("Log in");
-		Button createAccount = new Button("Create an account");
+
 		loginLabel.setFont(largeBoldFont);
-		IDTextField.setPrefWidth(160); // Adjust width as needed
-		IDTextField.setMaxWidth(160);
 		passwordTextField.setPrefWidth(160); // Adjust width as needed
 		passwordTextField.setMaxWidth(160);
 
 		loginBtn.setFont(largeFont);
 		/*-----------------------------------------------------------------------------------------------------*/
 		loginBtn.setOnAction(event -> { // when employee login button is clicked
-			if (IDTextField.getText().isEmpty()) {
-				System.out.println("add something to the ID textField");
-			} else if (IDTextField.getText().equals("1")) {
+			if (passwordTextField.getText().isEmpty()) {
+				errorLabel.setStyle("-fx-text-fill: red;");
+				errorLabel.setText("Error! The access code field is empty");
+			} else if (searchEmployee(doctorAccessCode, nurseAccessCode, passwordTextField.getText()) == 1) {
 				PediatricView employeeLoginGUI = new PediatricView();
 				stage.close();
 				employeeLoginGUI.start(new Stage());
-			} else {
+			} else if (searchEmployee(doctorAccessCode, nurseAccessCode, passwordTextField.getText()) == 2) {
 				NursePortal employeeLoginGUI = new NursePortal();
 				stage.close();
 				employeeLoginGUI.start(new Stage());
-			}
-		});
-		
-		createAccount.setOnAction(e->createNewAccount(stage));
-
-		setUp.setPadding(new Insets(80));
-		setUp.setAlignment(Pos.TOP_CENTER);
-		setUp.setSpacing(10);
-		setUp.getChildren().addAll(loginLabel, IDLabel, IDTextField, passwordLabel, passwordTextField, loginBtn);
-		root.getChildren().add(setUp);
-		stage.show();
-	}
-	
-	void createNewAccount(Stage oldStage) {
-		oldStage.close();
-		
-		
-	}
-}
-=======
-package pediatricDoctorOffice;
-
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.TextField;
-
-public class EmployeeLogin {
-	public static final int WIDTH = 700, HEIGHT = 450;
-
-	public void start(Stage stage) {
-		stage.setTitle("Employee Login");
-		StackPane root = new StackPane();
-		Scene scene = new Scene(root, WIDTH, HEIGHT);
-		stage.setScene(scene);
-
-		Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
-		Font largeFont = Font.font("Arial", 15);
-
-		VBox setUp = new VBox();
-
-		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
-		Label loginLabel = new Label("Employee Login");
-		Label IDLabel = new Label("Employee ID (enter 1 for doc view and 2 for nurse view):");
-		TextField IDTextField = new TextField();
-
-		Label passwordLabel = new Label("Password:");
-		TextField passwordTextField = new TextField();
-
-		Button loginBtn = new Button("Log in");
-
-		loginLabel.setFont(largeBoldFont);
-		IDTextField.setPrefWidth(160); // Adjust width as needed
-		IDTextField.setMaxWidth(160);
-		passwordTextField.setPrefWidth(160); // Adjust width as needed
-		passwordTextField.setMaxWidth(160);
-
-		loginBtn.setFont(largeFont);
-		/*-----------------------------------------------------------------------------------------------------*/
-		loginBtn.setOnAction(event -> { // when employee login button is clicked
-			if (IDTextField.getText().isEmpty()) {
-				System.out.println("add something to the ID textField");
-			} else if (IDTextField.getText().equals("1")) {
-				PediatricView employeeLoginGUI = new PediatricView();
-				stage.close();
-				employeeLoginGUI.start(new Stage());
 			} else {
-				NursePortal employeeLoginGUI = new NursePortal();
-				stage.close();
-				employeeLoginGUI.start(new Stage());
+				errorLabel.setStyle("-fx-text-fill: red;");
+				errorLabel.setText("Error! access code is incorrect");
+
 			}
 		});
 
 		setUp.setPadding(new Insets(80));
 		setUp.setAlignment(Pos.TOP_CENTER);
 		setUp.setSpacing(10);
-		setUp.getChildren().addAll(loginLabel, IDLabel, IDTextField, passwordLabel, passwordTextField, loginBtn);
+		setUp.getChildren().addAll(passwordLabel, passwordTextField, errorLabel, loginBtn);
 		root.getChildren().add(setUp);
 		stage.show();
 	}
+
+	int searchEmployee(String[] doctorArr, String[] nurseArr, String accessID) {
+		String employeePosition = accessID.substring(0, 2);
+
+		if (employeePosition.equals("do")) {
+			for (String it : doctorArr) {
+				if (accessID.equals(it)) {
+					return 1;
+				}
+			}
+		} else if (employeePosition.equals("nu")) {
+			for (String it : nurseArr) {
+				if (accessID.equals(it)) {
+					return 2;
+				}
+			}
+		}
+
+		return 3;
+	}
 }
->>>>>>> 219e6987ecf5cde049ab98dc7c77e75d718dea94
