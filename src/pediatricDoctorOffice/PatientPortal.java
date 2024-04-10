@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 
 public class PatientPortal {
 	public static final int WIDTH = 700, HEIGHT = 450;
+	private static final String DATA_PATH = "src/PatientData/";
 
 	public void start(Stage stage) {
 		stage.setTitle("Patient Portal");
@@ -36,11 +37,12 @@ public class PatientPortal {
 		
 		VBox setUp = new VBox();
 		/*---------------------------------------------------------------------------------------*/
-		Label intro = new Label("Hello, ");
-		Button logOut = new Button("Log Out");
+		 Label greeting = new Label("Hello);
+       		 greeting.setFont(Font.font("Arial", FontWeight.BOLD, 24));
 
-		intro.setFont(largeBoldFont);
-		logOut.setFont(largeFont);
+        	Label detailsLabel = new Label("Your Details:");
+        	detailsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
 		/*---------------------------------------------------------------------------------------*/
 		logOut.setOnAction(event -> { //when patient info is filled and log in is clicked
 			PediatricDoctorOffice mainPage = new PediatricDoctorOffice();
