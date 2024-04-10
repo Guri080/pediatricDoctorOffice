@@ -14,14 +14,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class NewMessagePage {
-    public static final int WIDTH = 700, HEIGHT = 450;
 
-    public static void display() {
+    public void start(Stage primaryStage) {
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL); // Use the stage passed in instead of creating a new one
         stage.setTitle("New Message");
+
         StackPane root = new StackPane();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(root, 700, 450); // WIDTH and HEIGHT constants can be replaced directly if they're not used elsewhere
         stage.setScene(scene);
 
         Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
@@ -52,11 +52,19 @@ public class NewMessagePage {
         sendButton.setFont(largeFont);
         sendButton.setOnAction(event -> {
             System.out.println("Message sent!");
-            // Here you can add actual sending logic
-            stage.close(); // Close the dialog after sending the message
+            // Here, you can implement the actual logic to send a message
+            stage.close(); // Closes the dialog after sending the message
+        });
+        
+        Button logOutButton = new Button("Log Out");
+        logOutButton.setFont(largeFont);
+        logOutButton.setOnAction(event -> {
+            // Implement logout logic here
+            stage.close(); // For simplicity, just close this stage
+            // Potentially redirect to login screen or perform cleanup actions
         });
 
-        layout.getChildren().addAll(titleLabel, senderField, receiverField, messageArea, sendButton);
+        layout.getChildren().addAll(titleLabel, senderField, receiverField, messageArea, sendButton, logOutButton);
         root.getChildren().add(layout);
 
         stage.showAndWait();
