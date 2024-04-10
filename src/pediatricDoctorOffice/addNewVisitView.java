@@ -320,6 +320,7 @@ public class addNewVisitView {
 		try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(str, true));
             writer.write("\n" + patientD);
+            System.out.println("written");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
