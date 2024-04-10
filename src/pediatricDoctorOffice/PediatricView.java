@@ -1,22 +1,24 @@
 package pediatricDoctorOffice;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class PediatricView extends Application {
-    public static final int WIDTH = 900, HEIGHT = 450;
+public class PediatricView {
+	public static final int WIDTH = 700, HEIGHT = 450;
 
-    @Override
-    public void start(Stage stage) {
-        stage.setTitle("Patient Information");
+	public void start(Stage stage) {
+		stage.setTitle("Patient Information");
 
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
@@ -47,22 +49,22 @@ public class PediatricView extends Application {
         searchButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         searchButton.setMaxWidth(Double.MAX_VALUE);
         searchButton.setOnAction(event -> {
-            // I will implement the search logic here later
-            // For now, just setting example text
+            // Implement the search logic here
         });
 
         inputFields.getChildren().addAll(firstNameField, lastNameField, birthDateField, searchButton);
-
+        
         /*-----PATIENT INFO DISPLAY--------------------------------------------------------------------------*/
+
         VBox patientInfo = new VBox(10);
         patientInfo.setAlignment(Pos.TOP_CENTER);
         patientInfo.setPadding(new Insets(10));
         
         Label patientInfoTitle = new Label("Patient Information");
         patientInfoTitle.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-        /*-----PATIENT INFO DISPLAY NON EDITABLE--------------------------------------------------------------------------*/
         
+        /*-----PATIENT INFO DISPLAY NON EDITABLE--------------------------------------------------------------------------*/
+
         TextField nameField = new TextField();
         nameField.setEditable(false);
         TextField birthField = new TextField();
@@ -70,10 +72,8 @@ public class PediatricView extends Application {
         TextArea additionalInfoArea = new TextArea();
         additionalInfoArea.setEditable(false);
 
-        patientInfo.getChildren().addAll(patientInfoTitle, new Label("Immunization"), nameField, new Label("bla bla:"), birthField, new Label("Nurse's Notes:"), additionalInfoArea);
+        patientInfo.getChildren().addAll(patientInfoTitle, new Label("Name:"), nameField, new Label("Date of Birth:"), birthField, new Label("Nurse's Notes:"), additionalInfoArea);
 
-        /*-----DISPLAY--------------------------------------------------------------------------*/
-        
         root.setTop(titleLabel);
         root.setLeft(inputFields);
         root.setCenter(patientInfo);
@@ -83,9 +83,6 @@ public class PediatricView extends Application {
 
         stage.setScene(scene);
         stage.show();
-    }
+	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
