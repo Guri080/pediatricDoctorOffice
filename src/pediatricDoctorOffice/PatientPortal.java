@@ -26,7 +26,7 @@ public class PatientPortal {
 	public static final int WIDTH = 700, HEIGHT = 450;
 
 	public void start(Stage stage) {
-		stage.setTitle("Employee Login");
+		stage.setTitle("Patient Portal");
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setScene(scene);
@@ -36,7 +36,7 @@ public class PatientPortal {
 		
 		VBox setUp = new VBox();
 		/*---------------------------------------------------------------------------------------*/
-		Label intro = new Label("Hello Patient");
+		Label intro = new Label("Hello, ");
 		Button logOut = new Button("Log Out");
 
 		intro.setFont(largeBoldFont);
