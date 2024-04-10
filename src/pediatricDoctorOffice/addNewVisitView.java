@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -74,7 +73,7 @@ public class addNewVisitView {
 		
 		try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(str));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
+            //BufferedWriter writer = new BufferedWriter(new FileWriter(nstr));
             writer.write(patientD);
             //pwriter.write(patientID);
             writer.close();
@@ -85,7 +84,7 @@ public class addNewVisitView {
 		
 		try {
             BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
+            //BufferedWriter writer = new BufferedWriter(new FileWriter(nstr));
             pwriter.write(patientID);
             //pwriter.write(patientID);
             pwriter.close();
