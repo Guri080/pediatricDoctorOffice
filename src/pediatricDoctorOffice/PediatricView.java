@@ -62,11 +62,13 @@ public class PediatricView {
             if (Files.exists(Paths.get(patientDataFilePath))) {
                 // Logic to load and display patient data can be added here
             } else {
-                // Handle rror case when no patient is found
+                // Handle error case when no patient is found
                 System.out.println("No patient record found. Please check the entered information.");
                 // Display an error
             }
         });
+        
+        
 
         inputFields.getChildren().addAll(firstNameField, lastNameField, birthDateField, searchButton);
 
@@ -98,7 +100,7 @@ public class PediatricView {
         /*-----PRESCRIPTION FIELD AND BUTTON--------------------------------------------------------------------------*/
 
         TextField prescriptionField = new TextField();
-        prescriptionField.setPromptText("Enter prescription");
+        prescriptionField.setPromptText("Enter prescription Meth");
 
         Button prescribeButton = new Button("Prescribe");
         prescribeButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
@@ -128,6 +130,8 @@ public class PediatricView {
             }
         });
 
+        inputFields.getChildren().addAll(prescriptionField, prescribeButton);
+        
         root.setTop(titleLabel);
         root.setLeft(inputFields);
         root.setRight(rightSideInfo);
