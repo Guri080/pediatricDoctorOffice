@@ -1,5 +1,9 @@
 package pediatricDoctorOffice;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,9 +51,7 @@ public class addNewVisitView {
 		oldPatient.setOnAction(e -> existingPatient(stage));
 
 		logOutBtn.setOnAction(event -> {
-			PediatricDoctorOffice mainScreen = new PediatricDoctorOffice();
-			
-
+			PediatricDoctorOffice mainScreen = new PediatricDoctorOffice();			
 		});
 
 		setUp.setSpacing(25);
@@ -57,6 +59,22 @@ public class addNewVisitView {
 		setUp.getChildren().addAll(newPatient, oldPatient);
 		root.getChildren().add(setUp);
 		stage.show();
+	}
+	void newPInit(String bday, String name, String height, String temp, String age, String bp) {
+		String str = name + bday;
+		str = str.replaceAll("\\s", "");
+		str = str.replaceAll("/", "");
+		str = "src/PatientData/" + str + "_data";		
+		
+		String patientD = height + "," + temp + "," + age + "," + bp;
+		
+		try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(str));
+            writer.write(patientD);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	void newPatient(Stage oldStage) {
@@ -68,12 +86,16 @@ public class addNewVisitView {
 		VBox container = new VBox();
 		GridPane gridPane = new GridPane();
 		// weight, height, body temperature, and blood pressure,
-		Label heightLabel = new Label("Enter height: ");
+		Label nameLabel = new Label("Enter Name (firstname lastname): ");
+		Label bdayLabel = new Label("Enter Birthday (mm/dd/yyyy): ");
+		Label heightLabel = new Label("Enter height (cm): ");
 		Label ageLabel = new Label("Enter age: ");
 		Label bodyTempIDLabel = new Label("Enter body temprature: ");
-		Label bloodPressureLabel = new Label("Enter patient ID: ");
+		Label bloodPressureLabel = new Label("Enter blood pressure: ");
 		Label errorLabel = new Label("");
-
+		
+		TextField nameField = new TextField();
+		TextField bdayField = new TextField();
 		TextField heightField = new TextField();
 		TextField ageField = new TextField();
 		TextField bodyTempIDField = new TextField();
@@ -81,17 +103,25 @@ public class addNewVisitView {
 
 		Button saveBtn = new Button("Save");
 		Button backBtn = new Button("Go back");
+		
+		
 		/*---------------------------------------------------------------------------------------*/
 		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
 			try {
-				if (heightField.getText().isEmpty() || bodyTempIDField.getText().isEmpty()
-						|| bloodPressureField.getText().isEmpty()) {
+				if (heightField.getText().isEmpty() ||bdayField.getText().isEmpty() || nameField.getText().isEmpty() ||bodyTempIDField.getText().isEmpty()|| bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! One or more fields are empty");
 				} else if (Double.parseDouble(ageField.getText()) < 12) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! The age should be more than 12");
 				} else {
+					String bday = bdayField.getText();
+					String name = nameField.getText(); 
+					String height = heightField.getText();
+					String temp = bodyTempIDField.getText();
+					String age = ageField.getText();
+					String bp = bloodPressureField.getText();
+					newPInit(bday, name, height, temp, age, bp);//**
 					heightField.clear();
 					ageField.clear();
 					bodyTempIDField.clear();
@@ -114,15 +144,19 @@ public class addNewVisitView {
 				e.printStackTrace();
 			}
 		});
-
-		gridPane.add(heightLabel, 0, 1);
-		gridPane.add(heightField, 1, 1);
-		gridPane.add(bodyTempIDLabel, 0, 2);
-		gridPane.add(bodyTempIDField, 1, 2);
-		gridPane.add(bloodPressureLabel, 0, 3);
-		gridPane.add(bloodPressureField, 1, 3);
-		gridPane.add(ageLabel, 0, 4);
-		gridPane.add(ageField, 1, 4);
+		
+		gridPane.add(nameLabel,0, 1);
+		gridPane.add(nameField, 1,1);
+		gridPane.add(bdayLabel,  0, 2);
+		gridPane.add(bdayField, 1, 2);
+		gridPane.add(heightLabel, 0, 3);
+		gridPane.add(heightField, 1, 3);
+		gridPane.add(bodyTempIDLabel, 0, 4);
+		gridPane.add(bodyTempIDField, 1, 4);
+		gridPane.add(bloodPressureLabel, 0, 5);
+		gridPane.add(bloodPressureField, 1, 5);
+		gridPane.add(ageLabel, 0, 6);
+		gridPane.add(ageField, 1, 6);
 //		gridPane.add(insuranceIDLabel, 0, 5);
 //		gridPane.add(insuranceIDText, 1, 5);
 
@@ -148,10 +182,10 @@ public class addNewVisitView {
 		GridPane gridPane = new GridPane();
 		// weight, height, body temperature, and blood pressure,
 		Label patientIDLabel = new Label("Enter patient ID: ");
-		Label heightLabel = new Label("Enter height: ");
+		Label heightLabel = new Label("Enter height (cm): ");
 		Label ageLabel = new Label("Enter age: ");
-		Label bodyTempIDLabel = new Label("Enter body temprature: ");
-		Label bloodPressureLabel = new Label("Enter patient ID: ");
+		Label bodyTempIDLabel = new Label("Enter body temperature: ");
+		Label bloodPressureLabel = new Label("Enter blood pressure: ");
 		Label errorLabel = new Label("");
 
 		TextField patientIDField = new TextField();
