@@ -52,12 +52,7 @@ public class PatientPortal {
 
         /*------------PATIENT INFORMATION---------------------------------------------------------*/
         
-        VBox patientInfoBox = new VBox(5);
-        Label heightLabel = new Label("Height: ");
-        Label tempLabel = new Label("Temperature: ");
-        Label ageLabel = new Label("Age: ");
-        Label bpLabel = new Label("Blood Pressure: ");
-        patientInfoBox.getChildren().addAll(heightLabel, tempLabel, ageLabel, bpLabel);
+        loadPatientData(visitsBox, patientName, patientDOB);
 
         /*----------SCROLL PANE USED FOR MULTIPLE VISIT ENTRIES----------------------------------------------------------*/
         
@@ -83,4 +78,48 @@ public class PatientPortal {
 
         stage.show();
     }
+
+private void loadPatientData(VBox visitsBox, String patientName, String patientDOB) {
+    String patientFileName = getPatientFileName(patientName, patientDOB);
+    File patientFile = new File(patientFileName);
+
+    if (patientFile.exists()) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(patientFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Assuming each line is a separate visit entry with format: height, temperature, age, blood pressure, notes
+                String[] visitData = line.split(",");
+
+                // Create a VBox for this visit
+                VBox visitEntryBox = new VBox(5);
+                visitEntryBox.setPadding(new Insets(5));
+                visitEntryBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+                // Check to ensure we have all expected data points
+                if (visitData.length >= 5) {
+                    // Assign each data point to a label with a descriptive prefix
+                    Label heightLabel = new Label("Height: " + visitData[0] + " cm");
+                    Label tempLabel = new Label("Temperature: " + visitData[1] + " °C");
+                    Label ageLabel = new Label("Age: " + visitData[2] + " years");
+                    Label bpLabel = new Label("Blood Pressure: " + visitData[3]);
+                    Label notesLabel = new Label("Notes: " + visitData[4]);
+
+                    // Add all the labels to the visit entry box
+                    visitEntryBox.getChildren().addAll(heightLabel, tempLabel, ageLabel, bpLabel, notesLabel);
+                } else {
+                    // Handle case where data is missing or not as expected
+                    visitEntryBox.getChildren().add(new Label("Incomplete visit data."));
+                }
+
+                // Add the visit entry box to the main visits box
+                visitsBox.getChildren().add(visitEntryBox);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } else {
+        visitsBox.getChildren().add(new Label("No visit data available for this patient."));
+    }
+}
+
 }
