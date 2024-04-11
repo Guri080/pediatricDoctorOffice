@@ -1,5 +1,9 @@
 package pediatricDoctorOffice;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -22,9 +27,8 @@ import javafx.stage.Stage;
 
 public class PatientPortal {
     public static final int WIDTH = 700, HEIGHT = 450;
-    // Placeholder for patient name
-    private static final String patientName = "Name";
-
+    
+    PatientLogin p1 = new PatientLogin();
     public void start(Stage stage) {
         stage.setTitle("Patient Portal");
         BorderPane root = new BorderPane();
@@ -38,8 +42,8 @@ public class PatientPortal {
         centerContent.setPadding(new Insets(20)); // Margin around the VBox
 
         /*-------HELLO PATIENT NAME------------------------------------------------------------------------*/
-        
-        Label intro = new Label("Hello " + patientName);
+        String pID = p1.getpID();
+        Label intro = new Label("Hello, " + pID);
         intro.setFont(largeBoldFont);
 
         /*-------MESSAGE BUTTON-------------------------------------------------------------*/
@@ -62,29 +66,78 @@ public class PatientPortal {
 
         /*----------SCROLL PANE USED FOR MULTIPLE VISIT ENTRIES----------------------------------------------------------*/
         
-        ScrollPane scrollPane = new ScrollPane();
-        VBox visitsBox = new VBox(10);
-        scrollPane.setContent(visitsBox);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setPrefHeight(HEIGHT / 2);
+//        ScrollPane scrollPane = new ScrollPane();
+//        VBox visitsBox = new VBox(10);
+//        scrollPane.setContent(visitsBox);
+//        scrollPane.setFitToWidth(true);
+//        scrollPane.setPrefHeight(HEIGHT / 2);
 
         /*------------ADDING ENTRY NEEDS WORK--------------------------------------------------------*/
         
-        HBox visitEntry = new HBox(20);
+        TextArea visitEntry = new TextArea();
         visitEntry.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         visitEntry.setPadding(new Insets(10));
-        Label dateLabel = new Label("Date: ");
-        Button viewVisitButton = new Button("View Visit Information");
-        visitEntry.getChildren().addAll(dateLabel, viewVisitButton);
-        visitsBox.getChildren().add(visitEntry);
-        centerContent.getChildren().addAll(intro, patientInfoBox, scrollPane);
+        centerContent.getChildren().addAll(intro, patientInfoBox, visitEntry);
+        
+        //get file using pID
+        // read visits
+        String fp = "src/PatientData/" + pID + "_data";
+        
+        try {
+            FileReader reader  = new FileReader(fp);
+            BufferedReader r = new BufferedReader(reader);
+            String line;
+            System.out.println("reading " +fp);
+            String lastLine = null;
+            while((line = r.readLine()) != null) {
+            	System.out.println(line);
+            	if (line != null) {
+                    lastLine = line;
+                }
+                line = reformat(line);
+                visitEntry.appendText(line + "\n");
+                
+                
+            }
+            if(lastLine != null) {
+            	System.out.println("ll" + lastLine);
+            	String[] info = lastLine.split(",");
+            	for(int i = 0; i < info.length; i++) {
+            		System.out.println(info[i]);
+            	}
+                heightLabel.setText("Height: " + info[1]);
+                tempLabel.setText("Temperature: " + info[2]);
+                ageLabel.setText("Age: " + info[3]);
+                bpLabel.setText("Blood Pressure: " + info[4]);
+            }
+            
+            
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        
         
         /*------------MESSAGES BUTTON OPENS NEW PAGE--------------------------------------------------------*/
-        
 
         root.setTop(topRightBox);
         root.setCenter(centerContent);
 
         stage.show();
+    }
+
+    private String reformat(String line) {
+        String[] input = line.split(",");
+        String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};
+        StringBuilder output = new StringBuilder();
+        for(int i = 0; i < input.length; i++) {
+            if(i < titles.length) {
+                if(i == input.length - 1 && input[i].isEmpty()) {
+                    output.append(titles[i]).append(" ");
+                } else {
+                    output.append(titles[i]).append(input[i]).append(" ");
+                }
+            }
+        }
+        return output.toString();
     }
 }
