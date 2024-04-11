@@ -1,6 +1,6 @@
 package pediatricDoctorOffice;
 
-// Import statements for JavaFX components required for creating the GUI
+//Imports
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -16,39 +16,39 @@ import javafx.util.Callback;
 
 public class MessagingWindow {
 
-    // TextArea for displaying the content of a selected message
+    //TextArea for dispalaying the content of a selected message
     private final TextArea messageContent = new TextArea();
 
+    //Create main stage
     public void display() {
-        // Create a new stage for the messaging window
         Stage stage = new Stage();
         stage.setTitle("Messages");
         BorderPane layout = new BorderPane();
 
-        // Buttons and their container at the top
+        //Buttons and their container at the top
         Button logOutButton = new Button("Log Out");
         Button sendNewMessageButton = new Button("Send New Message");
         HBox topMenu = new HBox(10, logOutButton, sendNewMessageButton);
         layout.setTop(topMenu);
 
-         // Action for the "Send New Message" button
+        //Action for the "Send New Message" button
         sendNewMessageButton.setOnAction(e -> NewMessageWindow.display());
 
         /*-------TABLE LAYOUT------------------------------------------------------------------------*/
-        // Setup for displaying messages in a table format
+        //Setup for displaying messages in a table format
         TableView<Message> table = new TableView<>();
 
-         // Column for the sender
+        //Sender column
         TableColumn<Message, String> fromColumn = new TableColumn<>("From");
         fromColumn.setMinWidth(100);
         fromColumn.setCellValueFactory(new PropertyValueFactory<>("from")); // Binding to "from" property of Message
 
-         // Column for the recipient
+        //Recipient column
         TableColumn<Message, String> toColumn = new TableColumn<>("To");
         toColumn.setMinWidth(100);
         toColumn.setCellValueFactory(new PropertyValueFactory<>("to")); // Binding to "to" property of Message
 
-         // Column for the view button in each row
+         //Column for the view button in each row
         TableColumn<Message, Void> viewColumn = new TableColumn<>("View");
         viewColumn.setCellFactory(new Callback<TableColumn<Message, Void>, TableCell<Message, Void>>() {
             public TableCell<Message, Void> call(final TableColumn<Message, Void> param) {
