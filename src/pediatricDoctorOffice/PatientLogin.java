@@ -1,5 +1,6 @@
 package pediatricDoctorOffice;
 
+// Import statements for necessary JavaFX and IO components.
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,69 +23,77 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class PatientLogin {
-	public static final int WIDTH = 700, HEIGHT = 450;
-	public static String pID;
-	
+	public static final int WIDTH = 700, HEIGHT = 450;// Dimensions of the login window.
+	public static String pID; // Static variable to hold the patient ID across the application.
+
+	// Method to initialize and display the patient login window.
 	public void start(Stage stage) {
-		stage.setTitle("Employee Login");
+		stage.setTitle("Patient Login");// Sets the window title.
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setScene(scene);
 
+		// Fonts for UI elements.
 		Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
 		Font largeFont = Font.font("Arial", 15);
 
-		VBox setUp = new VBox();
+		VBox setUp = new VBox(); // Vertical box for organizing components.
 
 		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
+		// UI components for login interface.
 		Label loginLabel = new Label("Patient Login");
 		Label userNameLabel = new Label("Username:");
-		Label errorLabel = new Label("");
+		Label errorLabel = new Label(""); // Label for error messages.
 		TextField userNameTextField = new TextField();
 
 		Label passwordLabel = new Label("Password:");
 		PasswordField passwordTextField = new PasswordField();
 
-		Button loginBtn = new Button("Log in");
-		Button newPatient = new Button("Create an account");
+		Button loginBtn = new Button("Log in"); // Button to trigger login.
+		Button newPatient = new Button("Create an account");// Button to switch to account creation.
 
+		// Set fonts and widths for UI components.
 		loginLabel.setFont(largeBoldFont);
-		userNameTextField.setPrefWidth(160); // Adjust width as needed
+		userNameTextField.setPrefWidth(160); 
 		userNameTextField.setMaxWidth(160);
-		passwordTextField.setPrefWidth(160); // Adjust width as needed
+		passwordTextField.setPrefWidth(160); 
 		passwordTextField.setMaxWidth(160);
-
 		loginBtn.setFont(largeFont);
-		/*-----------------------------------------------------------------------------------------------------*/
-		loginBtn.setOnAction(event -> { // when patient login button is clicked
-			PatientPortal patientLoginGUI = new PatientPortal();
 
+		// Event handler for the login button.
+		loginBtn.setOnAction(event -> { 
+			PatientPortal patientLoginGUI = new PatientPortal();
 			if (userNameTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()) {
 				errorLabel.setStyle("-fx-text-fill: red;");
 				errorLabel.setText("Error! One or more fields are empty");
+			// Logic to handle unsuccessful login attempts.
 			} else if (!(seachPatientAccount(userNameTextField.getText(), passwordTextField.getText()))) {
 
 			} else {
 				stage.close();
 				setpID(userNameTextField.getText());
-				patientLoginGUI.start(new Stage());
+				patientLoginGUI.start(new Stage());// Opens the patient portal.
 			}
 		});
 
+		 // Event handler for creating a new account.
 		newPatient.setOnAction(e -> createAccount(stage));
 
+		// Configures layout properties and adds components.
 		setUp.setPadding(new Insets(80));
 		setUp.setAlignment(Pos.TOP_CENTER);
 		setUp.setSpacing(10);
-		setUp.getChildren().addAll(loginLabel, userNameLabel, userNameTextField, passwordLabel, passwordTextField,
-				loginBtn, newPatient);
+		setUp.getChildren().addAll(loginLabel, userNameLabel, userNameTextField, passwordLabel, passwordTextField, loginBtn, newPatient);
 		root.getChildren().add(setUp);
 		stage.show();
 	}
 
+	// Method to display the account creation interface.
 	void createAccount(Stage oldStage) {
-		System.out.println("button clicked");
+		System.out.println("button clicked"); // Debugging print statement.
 		oldStage.close();
+
+		// Creates a new stage for account creation.
 		Stage stage = new Stage();
 		stage.initOwner(null);
 		StackPane root = new StackPane();
@@ -92,6 +101,7 @@ public class PatientLogin {
 		VBox container = new VBox();
 		GridPane gridPane = new GridPane();
 
+		// Labels and fields for account creation form.
 		Label nameLabel = new Label("Enter your name");
 		Label DOBLabel = new Label("Enter your date of birth");
 		Label passwordLabel = new Label("Enter your password");
@@ -103,8 +113,10 @@ public class PatientLogin {
 		PasswordField passwordField = new PasswordField();
 		PasswordField confirmPasswordField = new PasswordField();
 
+		// Button to submit the account creation form.
 		Button createAccBtn = new Button("Create Account");
 
+		// Arranging form elements in the grid.
 		gridPane.add(nameLabel, 0, 0);
 		gridPane.add(nameField, 1, 0);
 		gridPane.add(DOBLabel, 0, 1);
@@ -114,7 +126,9 @@ public class PatientLogin {
 		gridPane.add(confirmPasswordLabel, 0, 3);
 		gridPane.add(confirmPasswordField, 1, 3);
 
+		// Event handling for the "Create Account" button.
 		createAccBtn.setOnAction(event -> {
+			// Validation checks for empty fields and password match.
 			if (nameField.getText().isEmpty() || DOBField.getText().isEmpty() || passwordField.getText().isEmpty()
 					|| confirmPasswordField.getText().isEmpty()) {
 				errorLabel.setStyle("-fx-text-fill: red;");
@@ -123,6 +137,7 @@ public class PatientLogin {
 				errorLabel.setStyle("-fx-text-fill: red;");
 				errorLabel.setText("Error! passwords do not match");
 			} else if (searchPatient(nameField.getText(), DOBField.getText())) {
+				// Attempts to create the account if validation passes.
 				writeToFile(nameField.getText(), DOBField.getText(), passwordField.getText());
 				errorLabel.setStyle("-fx-text-fill: black;");
 				errorLabel.setText("Account Created");
@@ -133,6 +148,7 @@ public class PatientLogin {
 
 		});
 
+		// Styling and layout configurations.
 		gridPane.setAlignment(Pos.CENTER_LEFT);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
@@ -145,8 +161,10 @@ public class PatientLogin {
 		stage.show();
 
 	}
-
+	
+	// Method to search for a patient's information when creating an account.
 	boolean searchPatient(String name, String DOB) {
+		// Constructs a patient ID string from the name and DOB, removing spaces and slashes.
 		String str = name + DOB;
 		str = str.replaceAll("\s", "");
 		str = str.replaceAll("/", "");
@@ -164,18 +182,19 @@ public class PatientLogin {
 			// Iterate through the files
 			for (File file : files) {
 				if (file.isFile() && file.getName().equals(patientID)) {
-					return checkUser(file);
+					return checkUser(file); // Checks if the user data already exists.
 				}
 			}
 		}
 		return false;
 	}
 
+	// Helper method to check if user data already exists in the file.
 	private boolean checkUser(File patientFile) {
 		String line = "";
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(patientFile));
-			line = reader.readLine();
+			line = reader.readLine(); // Reads the first line of the file.
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -184,12 +203,13 @@ public class PatientLogin {
 		String[] arr = line.split(",");
 
 		if (arr.length >= 2) {
-			return false; // patient already exists
-		} else {
-			return true; // patient does NOT exists
-		}
+        		return false; // Indicates that the patient already exists.
+   		 } else {
+        		return true; // Indicates that the patient does not exist and can be created.
+    		}
 	}
 
+	// Method to search for a patient's account using their ID and password.
 	private boolean seachPatientAccount(String patientID, String password) {
 		String directoryPath = "src/PatientLogins/";
 		String line = "";
@@ -240,7 +260,9 @@ public class PatientLogin {
 		return false;
 	}
 
+	// Writes new patient information to a file.
 	private void writeToFile(String name, String DOB, String password) {
+		// Constructs a patient ID string from the name and DOB, removing spaces and slashes.
 		System.out.println(name + " " + DOB + " " + password);
 		String str = name + DOB;
 		str = str.replaceAll("\s", "");
@@ -259,10 +281,12 @@ public class PatientLogin {
 		}
 	}
 	
+	// Setter method for patient ID.
 	private void setpID(String in) {
 		pID = in;
 	}
-	
+
+	// Getter method for patient ID.
 	public String getpID() {
 		return pID;
 	}
