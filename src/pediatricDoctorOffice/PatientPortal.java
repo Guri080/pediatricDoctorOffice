@@ -65,6 +65,7 @@ public class PatientPortal {
         patientInfoBox.getChildren().addAll(heightLabel, tempLabel, ageLabel, bpLabel);
 
         /*----------SCROLL PANE USED FOR MULTIPLE VISIT ENTRIES----------------------------------------------------------*/
+        //Old Code
         
 //        ScrollPane scrollPane = new ScrollPane();
 //        VBox visitsBox = new VBox(10);
@@ -124,6 +125,8 @@ public class PatientPortal {
 
         stage.show();
     }
+
+    //Puts information into a readable format for the patient
 
     private String reformat(String line) {
         String[] input = line.split(",");
