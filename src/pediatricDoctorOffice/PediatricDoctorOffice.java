@@ -1,5 +1,6 @@
 package pediatricDoctorOffice;
 
+//imports
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,7 +56,8 @@ public class PediatricDoctorOffice extends Application {
 		patientLogin.setPrefSize(150, 50);
 		
 		login.getChildren().addAll(employeeLogin, patientLogin);
-		/*---------------------------------------------------------------------------------------------*/
+		/*------EVENT HANDLER----------------------------------------------------------------------------*/
+		//Direct user to portal depending on button they press
 		
 		employeeLogin.setOnAction(event -> { //when employee login button is clicked
 			EmployeeLogin employeeLoginGUI = new EmployeeLogin();
