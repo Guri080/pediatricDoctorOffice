@@ -30,7 +30,8 @@ public class PediatricMessagingWindow {
 		Stage stage = new Stage();
 		stage.setTitle("Messages");
 		BorderPane layout = new BorderPane();
-
+		
+		//ui
 		Button logOutButton = new Button("Log Out");
 		Button sendNewMessageButton = new Button("Send New Message");
 		HBox topMenu = new HBox(10, logOutButton, sendNewMessageButton);
@@ -46,10 +47,8 @@ public class PediatricMessagingWindow {
 		firstNameField.setPromptText("First Name");
 
 		TextField lastNameField = new TextField();
-		// lastNameField.setPromptText("Last Name");
 
 		TextField birthDateField = new TextField();
-		// birthDateField.setPromptText("Date of Birth");
 
 		Button searchButton = new Button("Search");
 		searchButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
@@ -60,22 +59,27 @@ public class PediatricMessagingWindow {
 		layout.setLeft(inputFields);
 
 		// ****************************
+		//when search button is clicked
 		searchButton.setOnAction(event -> {
 			messageContent.clear();
+			//assemble pID with field info
 			String pID = firstNameField.getText() + lastNameField.getText()
 					+ birthDateField.getText().replaceAll("/", "");
-
+			
+			//check for empty fields
 			if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()
 					|| birthDateField.getText().isEmpty()) {
 
 			} else if (!searchPatient(pID)) {
 				System.out.println("does not exist");
-			} else {
+			} else {//all fields filled and patient exists
+				
 				userID = pID;
 				sendNewMessageButton.setVisible(true);
 				sendNewMessageButton.setOnAction(e -> new PediatricNewMessageWindow().display());
 				String filePath = "src/PatientLogins/" + pID + "_login";
 				String line = "";
+				//read messages and display to textArea messageContent
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(filePath));
 					while ((line = reader.readLine()) != null) {
@@ -95,7 +99,12 @@ public class PediatricMessagingWindow {
 		stage.setScene(scene);
 		stage.show();
 	}
-
+	
+	/**
+	 * Checks if patient exists by searching for file with pID
+	 * @param patientID
+	 * @return patientExists true/false
+	 */
 	private Boolean searchPatient(String patientID) {
 		// Specify the directory containing the text files
 		String directoryPath = "src/PatientData";
