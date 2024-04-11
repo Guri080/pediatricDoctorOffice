@@ -23,7 +23,8 @@ import javafx.stage.Stage;
 
 public class PatientLogin {
 	public static final int WIDTH = 700, HEIGHT = 450;
-
+	public static String pID;
+	
 	public void start(Stage stage) {
 		stage.setTitle("Employee Login");
 		StackPane root = new StackPane();
@@ -65,6 +66,7 @@ public class PatientLogin {
 
 			} else {
 				stage.close();
+				setpID(userNameTextField.getText());
 				patientLoginGUI.start(new Stage());
 			}
 		});
@@ -255,5 +257,13 @@ public class PatientLogin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void setpID(String in) {
+		pID = in;
+	}
+	
+	public String getpID() {
+		return pID;
 	}
 }
