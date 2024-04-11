@@ -178,6 +178,12 @@ public class PediatricView {
         alert.showAndWait();
     }
     
+    /**
+     * Formats visit information from database for human consumption
+     * 
+     * @param line: visit unformatted information
+     * @return formatted information with labels
+     */
     private String reformat(String line) {
         String[] input = line.split(",");
         String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};
