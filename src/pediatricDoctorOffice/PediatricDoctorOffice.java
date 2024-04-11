@@ -1,3 +1,5 @@
+//WELCOME LADNING PAGE
+
 package pediatricDoctorOffice;
 
 import javafx.application.Application;
@@ -41,6 +43,7 @@ public class PediatricDoctorOffice extends Application {
 		
 
 		/*-----LOGIN PAGE------------------------------------------------------------------------------*/
+		
 		VBox login = new VBox();
 		login.setAlignment(Pos.CENTER);
 		
@@ -53,7 +56,10 @@ public class PediatricDoctorOffice extends Application {
 		patientLogin.setPrefSize(150, 50);
 		
 		login.getChildren().addAll(employeeLogin, patientLogin);
-		/*---------------------------------------------------------------------------------------------*/
+		
+		/*------EVENT HANDLING-------------------------------------------------------------------------------*/
+		//If Employee Login is pressed, take them to the employee login page.
+		//If Patient Login is pressed, take them to patient login page.
 		
 		employeeLogin.setOnAction(event -> { //when employee login button is clicked
 			EmployeeLogin employeeLoginGUI = new EmployeeLogin();
@@ -66,6 +72,8 @@ public class PediatricDoctorOffice extends Application {
 			stage.close();
 			patientLoginGUI.start(new Stage());
 		});
+		
+		/*-------------------------------------------------------------------------------------*/
 	
 		root.getChildren().add(login);
 		stage.setScene(scene);

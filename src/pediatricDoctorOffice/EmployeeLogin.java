@@ -1,3 +1,5 @@
+//EMPLOYEE LOGIN PAGE
+
 package pediatricDoctorOffice;
 
 import javafx.application.Application;
@@ -41,6 +43,8 @@ public class EmployeeLogin {
 		String[] nurseAccessCode = { "nu11", "nu12", "nu13", "nu14" };
 
 		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
+		//Consists of title, access code field, and login button which is to be input by the employee
+		
 		Label loginLabel = new Label("Employee Login");
 		Label accessIDLabel = new Label("Enter employee access code:");
 		Label errorLabel = new Label("");
@@ -50,11 +54,14 @@ public class EmployeeLogin {
 		Button loginBtn = new Button("Log in");
 
 		loginLabel.setFont(largeBoldFont);
-		passwordTextField.setPrefWidth(160); // Adjust width as needed
+		passwordTextField.setPrefWidth(160);
 		passwordTextField.setMaxWidth(160);
 
 		loginBtn.setFont(largeFont);
-		/*-----------------------------------------------------------------------------------------------------*/
+		
+		/*-----EVENT HANDLING-------------------------------------------------------------------------------------*/
+		//Login button will use the authenticateEmployee to verify users and if successful take them into their respective employee portals.
+		
 		loginBtn.setOnAction(event -> { // when employee login button is clicked
 			if (passwordTextField.getText().isEmpty()) {
 				errorLabel.setStyle("-fx-text-fill: red;");
@@ -81,6 +88,9 @@ public class EmployeeLogin {
 		stage.show();
 	}
 
+	/*-----AUTHENTICATION LOGIC-------------------------------------------------------------------------------------*/
+	//This method is responsible for verifying the access codes of the employees(doctors/nurses)
+	
 	int authenticateEmployee(String[] doctorArr, String[] nurseArr, String accessID) {
 		String employeePosition = accessID.substring(0, 2);
 

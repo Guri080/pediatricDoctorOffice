@@ -1,3 +1,5 @@
+//DOCTOR PORTAL
+
 package pediatricDoctorOffice;
 
 import javafx.application.Application;
@@ -42,6 +44,8 @@ public class PediatricView {
         BorderPane.setAlignment(titleLabel, Pos.CENTER);
 
         /*-----TOP SECTION--------------------------------------------------------------------------*/
+        //This is responsible for creating the area where the pediatric doctor can search for the patient's information in the database and
+        //show information regarding the patient
 
         VBox topSection = new VBox(10);
         topSection.setPadding(new Insets(10));
@@ -71,11 +75,16 @@ public class PediatricView {
         topSection.getChildren().addAll(titleLabel, firstNameField, lastNameField, birthDateField, searchAndMessageButtons);
         
         /*-----PATIENT INFORMATION--------------------------------------------------------------------------*/
+        //Big text box that is used to display the Patient's information
+        
         TextArea patientInfoArea = new TextArea();
         patientInfoArea.setPromptText("Patient Information...");
         patientInfoArea.setEditable(false);
 
         /*-----PRESCRIPTION FIELD AND BUTTON--------------------------------------------------------------------------*/
+        //Prescription textfield at bottom to allow doctors to enter in the prescription and prescribe them a medication which will
+        //save to the database
+        
         VBox bottomSection = new VBox(10);
         bottomSection.setAlignment(Pos.CENTER);
         bottomSection.setPadding(new Insets(10));
@@ -89,6 +98,7 @@ public class PediatricView {
         bottomSection.getChildren().addAll(prescriptionField, prescribeButton);
         
         /*-----EVENT HANDLERS--------------------------------------------------------------------------*/
+        //When the logout button is pressed take the user back to the login page
         
         logoutButton.setOnAction(event -> {
             stage.close();
@@ -99,10 +109,11 @@ public class PediatricView {
                 e.printStackTrace();
             }
         });
-
         
+        //Opens a send message window
         sendMessageButton.setOnAction(e -> NewMessageWindow.display());
         
+        //Searching logic for the patient using the inputs at the top of the screen
         searchButton.setOnAction(event -> {
         	if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty() || birthDateField.getText().trim().isEmpty()) {
                 showErrorDialog("Fields must not be empty");
@@ -140,9 +151,10 @@ public class PediatricView {
             }
         });
         
+        //Prescribe button will append information to the patient's data file
         prescribeButton.setOnAction(event -> {
             String prescription = prescriptionField.getText();
-            // Append prescription to patients data file
+            //Append prescription to patients data file
             if(patientExists) {
                 try {
                     FileWriter writer = new FileWriter("src/PatientData/" + pID + "_data", true);    
@@ -163,6 +175,7 @@ public class PediatricView {
         stage.show();
     }
     
+    //Search Patient will locate the information of the patient in the database given inputs
     private Boolean searchPatient(String patientID) {
         // Specify the directory containing the text files
         String directoryPath = "src/PatientData";
@@ -185,6 +198,7 @@ public class PediatricView {
         return false;
     }
     
+    //Used to create an error if the fields aren't filled out    
     private void showErrorDialog(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
@@ -193,6 +207,7 @@ public class PediatricView {
         alert.showAndWait();
     }
     
+    //This will reformat the information in the file and display it to the doctor given inputs
     private String reformat(String line) {
         String[] input = line.split(",");
         String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};

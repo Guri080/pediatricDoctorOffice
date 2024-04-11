@@ -1,3 +1,5 @@
+//PATIENT PORTAL
+
 package pediatricDoctorOffice;
 
 import javafx.application.Application;
@@ -22,7 +24,6 @@ import javafx.stage.Stage;
 
 public class PatientPortal {
     public static final int WIDTH = 700, HEIGHT = 450;
-    // Placeholder for patient name
     private static final String patientName = "Name";
 
     public void start(Stage stage) {
@@ -34,8 +35,8 @@ public class PatientPortal {
         Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
         Font largeFont = Font.font("Arial", 15);
 
-        VBox centerContent = new VBox(10); // Adjust spacing as needed
-        centerContent.setPadding(new Insets(20)); // Margin around the VBox
+        VBox centerContent = new VBox(10);
+        centerContent.setPadding(new Insets(20));
 
         /*-------HELLO PATIENT NAME------------------------------------------------------------------------*/
         
@@ -43,6 +44,7 @@ public class PatientPortal {
         intro.setFont(largeBoldFont);
 
         /*-------MESSAGE BUTTON-------------------------------------------------------------*/
+        //Message button will open up a new messaging window where the patient can interact with a menu to view message information
         
         Button messageButton = new Button("Message");
         messageButton.setFont(largeFont);
@@ -52,6 +54,7 @@ public class PatientPortal {
         topRightBox.setPadding(new Insets(10));
         
         /*------------PATIENT INFORMATION---------------------------------------------------------*/
+        //Patient information is displayed to the user
         
         VBox patientInfoBox = new VBox(5);
         Label heightLabel = new Label("Height: ");
@@ -68,7 +71,7 @@ public class PatientPortal {
         scrollPane.setFitToWidth(true);
         scrollPane.setPrefHeight(HEIGHT / 2);
 
-        /*------------ADDING ENTRY NEEDS WORK--------------------------------------------------------*/
+        /*------------ADDING ENTRY--------------------------------------------------------*/
         
         HBox visitEntry = new HBox(20);
         visitEntry.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
