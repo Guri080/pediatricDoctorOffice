@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -87,6 +89,11 @@ public class PediatricView {
         sendMessageButton.setOnAction(e -> NewMessageWindow.display());
         
         searchButton.setOnAction(event -> {
+        	if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty() || birthDateField.getText().trim().isEmpty()) {
+                showErrorDialog("Fields must not be empty");
+                return;
+            }
+        	
             String name = firstNameField.getText() + lastNameField.getText();
             String bday = birthDateField.getText();
             
@@ -163,13 +170,25 @@ public class PediatricView {
         return false;
     }
     
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
     private String reformat(String line) {
         String[] input = line.split(",");
         String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};
         StringBuilder output = new StringBuilder();
         for(int i = 0; i < input.length; i++) {
             if(i < titles.length) {
-                output.append(titles[i]).append(input[i]).append(" ");
+                if(i == input.length - 1 && input[i].isEmpty()) {
+                    output.append(titles[i]).append(" ");
+                } else {
+                    output.append(titles[i]).append(input[i]).append(" ");
+                }
             }
         }
         return output.toString();
