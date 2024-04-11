@@ -30,18 +30,21 @@ public class MessagingWindow {
 		Stage stage = new Stage();
 		stage.setTitle("Messages");
 		BorderPane layout = new BorderPane();
-
+		//ui
 		Button logOutButton = new Button("Log Out");
 		Button sendNewMessageButton = new Button("Send New Message");
 		HBox topMenu = new HBox(10, logOutButton, sendNewMessageButton);
 		layout.setTop(topMenu);
-
+		
+		//displays message window on-click
 		sendNewMessageButton.setOnAction(e -> NewMessageWindow.display());
-
+		
+		//get pID and set filepath
 		PatientLogin pID = new PatientLogin();
 		String filePath = "src/PatientLogins/" + pID.getpID() + "_login";
 		String line = "";
 		try {
+			//write message to file
 			BufferedReader reader = new BufferedReader(new FileReader(filePath));
 			while ((line = reader.readLine()) != null) {
 				line = reader.readLine();
@@ -53,7 +56,6 @@ public class MessagingWindow {
 		}
 		messageContent.setEditable(false);
 		layout.setRight(messageContent);
-
 		Scene scene = new Scene(layout, 700, 400);
 		stage.setScene(scene);
 		stage.show();
