@@ -1,6 +1,6 @@
 package pediatricDoctorOffice;
 
-// Import statements for JavaFX components required for creating the GUI
+//Imports
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 
-// Declaration of the EmployeeLogin class
+// Employee Login class
 public class EmployeeLogin {
 	public static final int WIDTH = 700, HEIGHT = 450; // Constants for the window size
 
@@ -45,7 +45,8 @@ public class EmployeeLogin {
 		String[] nurseAccessCode = { "nu11", "nu12", "nu13", "nu14" };
 
 		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
-		// UI components for the login page
+		//Consists of title, access code field, and login button which is to be input by the employee
+		
 		Label loginLabel = new Label("Employee Login");
 		Label accessIDLabel = new Label("Enter employee access code:");
 		Label errorLabel = new Label("");
@@ -61,8 +62,8 @@ public class EmployeeLogin {
 
 		loginBtn.setFont(largeFont);
 		/*-----------------------------------------------------------------------------------------------------*/
-
-		// Event handler for the login button
+		//Login button will use the authenticateEmployee to verify users and if successful take them into their respective employee portals.
+		
 		loginBtn.setOnAction(event -> { 
 			if (passwordTextField.getText().isEmpty()) {
 				errorLabel.setStyle("-fx-text-fill: red;");
@@ -93,7 +94,9 @@ public class EmployeeLogin {
 		stage.show();
 	}
 
-	// Method to authenticate employee access codes
+	/*-----AUTHENTICATION LOGIC-------------------------------------------------------------------------------------*/
+	//This method is responsible for verifying the access codes of the employees(doctors/nurses)
+	
 	int authenticateEmployee(String[] doctorArr, String[] nurseArr, String accessID) 
 	{
 		String employeePosition = accessID.substring(0, 2);
@@ -112,5 +115,5 @@ public class EmployeeLogin {
 		}
 
 		return 3;
-	} // Access denied
+	}
 }
