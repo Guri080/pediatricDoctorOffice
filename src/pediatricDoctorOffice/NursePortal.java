@@ -35,6 +35,7 @@ public class NursePortal {
 		VBox setUp = new VBox();
 
 		/*---------------------------------------------------------------------------------------*/
+		//greeting text
 		Label intro = new Label("Hello Nurse");
 		Button logOut = new Button("Log Out");
 		Button addVisit = new Button("Add new visit");
@@ -44,20 +45,22 @@ public class NursePortal {
 		logOut.setFont(largeFont);
 
 		/*---------------------------------------------------------------------------------------*/
+		//add a new visit
 		addVisit.setOnAction(event -> { // when employee info is filled and log in is clicked
 			addNewVisitView addNewVisit = new addNewVisitView();
 			stage.close();
 			try {
 				addNewVisit.start(new Stage());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
+		//logout
 		logOut.setOnAction(event -> { // when employee info is filled and log in is clicked
 			PediatricDoctorOffice mainPage = new PediatricDoctorOffice();
 			stage.close();
 			try {
+				//back to main page
 				mainPage.start(new Stage());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
