@@ -56,17 +56,21 @@ public class EmployeeLogin {
 		loginBtn.setFont(largeFont);
 		/*-----------------------------------------------------------------------------------------------------*/
 		loginBtn.setOnAction(event -> { // when employee login button is clicked
-			if (passwordTextField.getText().isEmpty()) {
+			if (passwordTextField.getText().isEmpty()) {//checks fields are filled in
 				errorLabel.setStyle("-fx-text-fill: red;");
 				errorLabel.setText("Error! One or more fields are empty");
+			
+			//open doctor view
 			} else if (authenticateEmployee(doctorAccessCode, nurseAccessCode, passwordTextField.getText()) == 1) {
 				PediatricView employeeLoginGUI = new PediatricView();
 				stage.close();
 				employeeLoginGUI.start(new Stage());
+			//open nurse view
 			} else if (authenticateEmployee(doctorAccessCode, nurseAccessCode, passwordTextField.getText()) == 2) {
 				NursePortal employeeLoginGUI = new NursePortal();
 				stage.close();
 				employeeLoginGUI.start(new Stage());
+			//error!
 			} else {
 				errorLabel.setStyle("-fx-text-fill: red;");
 				errorLabel.setText("Error! incorrect access code");
@@ -80,17 +84,25 @@ public class EmployeeLogin {
 		root.getChildren().add(setUp);
 		stage.show();
 	}
-
+	
+	
+	/**
+	 * Checks if the employee exists
+	 * @param doctorArr
+	 * @param nurseArr
+	 * @param accessID
+	 * @return
+	 */
 	int authenticateEmployee(String[] doctorArr, String[] nurseArr, String accessID) {
 		String employeePosition = accessID.substring(0, 2);
-
+		//doctor access
 		if (employeePosition.equals("do")) {
 			for (String it : doctorArr) {
 				if (accessID.equals(it)) {
 					return 1;
 				}
 			}
-
+		//nurse access
 		} else if (employeePosition.equals("nu")) {
 			for (String it : nurseArr) {
 				if (accessID.equals(it)) {
@@ -98,7 +110,7 @@ public class EmployeeLogin {
 				}
 			}
 		}
-
+		//error 
 		return 3;
 	}
 }
