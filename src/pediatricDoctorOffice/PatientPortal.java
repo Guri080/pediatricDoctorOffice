@@ -1,9 +1,10 @@
 package pediatricDoctorOffice;
 
+// Import statements for JavaFX components, IO operations, and styling.
+import java.io.BufferedReader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,29 +26,34 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+// Main class definition for the patient portal interface.
 public class PatientPortal {
-    public static final int WIDTH = 700, HEIGHT = 450;
-    
+    public static final int WIDTH = 700, HEIGHT = 450; // Constants for the window size.
+
+    // Reference to the PatientLogin class to access the patient ID.
     PatientLogin p1 = new PatientLogin();
+
+    // Initializes and displays the patient portal UI.
     public void start(Stage stage) {
-        stage.setTitle("Patient Portal");
+        stage.setTitle("Patient Portal");// Title of the window.
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
 
+         // Fonts for the UI elements.
         Font largeBoldFont = Font.font("Arial", FontWeight.BOLD, 30);
         Font largeFont = Font.font("Arial", 15);
 
-        VBox centerContent = new VBox(10); // Adjust spacing as needed
-        centerContent.setPadding(new Insets(20)); // Margin around the VBox
+        // VBox for center content with padding and spacing.
+        VBox centerContent = new VBox(10); 
+        centerContent.setPadding(new Insets(20)); 
 
-        /*-------HELLO PATIENT NAME------------------------------------------------------------------------*/
-        String pID = p1.getpID();
+        // Label to greet the patient with their ID.
+        String pID = p1.getpID(); // Fetches the patient ID from PatientLogin.
         Label intro = new Label("Hello, " + pID);
         intro.setFont(largeBoldFont);
 
-        /*-------MESSAGE BUTTON-------------------------------------------------------------*/
-        
+        // Button to navigate to the messaging functionality.
         Button messageButton = new Button("Message");
         messageButton.setFont(largeFont);
         messageButton.setOnAction(e -> new MessagingWindow().display());
@@ -55,8 +61,7 @@ public class PatientPortal {
         topRightBox.setAlignment(Pos.TOP_RIGHT);
         topRightBox.setPadding(new Insets(10));
         
-        /*------------PATIENT INFORMATION---------------------------------------------------------*/
-        
+        // VBox for displaying patient information.
         VBox patientInfoBox = new VBox(5);
         Label heightLabel = new Label("Height: ");
         Label tempLabel = new Label("Temperature: ");
@@ -64,25 +69,14 @@ public class PatientPortal {
         Label bpLabel = new Label("Blood Pressure: ");
         patientInfoBox.getChildren().addAll(heightLabel, tempLabel, ageLabel, bpLabel);
 
-        /*----------SCROLL PANE USED FOR MULTIPLE VISIT ENTRIES----------------------------------------------------------*/
-        
-//        ScrollPane scrollPane = new ScrollPane();
-//        VBox visitsBox = new VBox(10);
-//        scrollPane.setContent(visitsBox);
-//        scrollPane.setFitToWidth(true);
-//        scrollPane.setPrefHeight(HEIGHT / 2);
-
-        /*------------ADDING ENTRY NEEDS WORK--------------------------------------------------------*/
-        
+        // TextArea for displaying visit entries with a border.
         TextArea visitEntry = new TextArea();
         visitEntry.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         visitEntry.setPadding(new Insets(10));
         centerContent.getChildren().addAll(intro, patientInfoBox, visitEntry);
         
-        //get file using pID
-        // read visits
-        String fp = "src/PatientData/" + pID + "_data";
-        
+        // Attempts to read patient data from a file and display it.
+        String fp = "src/PatientData/" + pID + "_data";    // File path based on patient ID.    
         try {
             FileReader reader  = new FileReader(fp);
             BufferedReader r = new BufferedReader(reader);
@@ -92,13 +86,12 @@ public class PatientPortal {
             while((line = r.readLine()) != null) {
             	System.out.println(line);
             	if (line != null) {
-                    lastLine = line;
+                    lastLine = line; // Keeps track of the last line read.
                 }
-                line = reformat(line);
-                visitEntry.appendText(line + "\n");
-                
-                
+                line = reformat(line); // Reformats the line for display.
+                visitEntry.appendText(line + "\n");  // Appends the reformatted line to the TextArea.                
             }
+            // Updates the patient information labels with the last entry's data
             if(lastLine != null) {
             	System.out.println("ll" + lastLine);
             	String[] info = lastLine.split(",");
@@ -109,22 +102,19 @@ public class PatientPortal {
                 tempLabel.setText("Temperature: " + info[2]);
                 ageLabel.setText("Age: " + info[3]);
                 bpLabel.setText("Blood Pressure: " + info[4]);
-            }
-            
-            
+            }    
         } catch(IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();// Prints any IO exception stack trace.
         }
         
         
-        /*------------MESSAGES BUTTON OPENS NEW PAGE--------------------------------------------------------*/
-
+         // Configures the layout of the root container and shows the stage.
         root.setTop(topRightBox);
         root.setCenter(centerContent);
-
         stage.show();
     }
 
+   // Reformats a string line by appending titles to the respective data fields for readability.
     private String reformat(String line) {
         String[] input = line.split(",");
         String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};
@@ -138,6 +128,6 @@ public class PatientPortal {
                 }
             }
         }
-        return output.toString();
+        return output.toString(); // Returns the reformatted string.
     }
 }
