@@ -23,9 +23,10 @@ import javafx.stage.Stage;
 
 public class PatientLogin {
 	public static final int WIDTH = 700, HEIGHT = 450;
+	public static String userID = "";
 
 	public void start(Stage stage) {
-		stage.setTitle("Employee Login");
+		stage.setTitle("Patientt Login");
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setScene(scene);
@@ -38,10 +39,11 @@ public class PatientLogin {
 		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
 		Label loginLabel = new Label("Patient Login");
 		Label userNameLabel = new Label("Username:");
+		Label errorLabel = new Label("");
 		TextField userNameTextField = new TextField();
 
 		Label passwordLabel = new Label("Password:");
-		TextField passwordTextField = new TextField();
+		PasswordField passwordTextField = new PasswordField();
 
 		Button loginBtn = new Button("Log in");
 		Button newPatient = new Button("Create an account");
@@ -56,8 +58,17 @@ public class PatientLogin {
 		/*-----------------------------------------------------------------------------------------------------*/
 		loginBtn.setOnAction(event -> { // when patient login button is clicked
 			PatientPortal patientLoginGUI = new PatientPortal();
-			stage.close();
-			patientLoginGUI.start(new Stage());
+
+			if (userNameTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()) {
+				errorLabel.setStyle("-fx-text-fill: red;");
+				errorLabel.setText("Error! One or more fields are empty");
+			} else if (!(seachPatientAccount(userNameTextField.getText(), passwordTextField.getText()))) {
+
+			} else {
+				userID = userNameTextField.getText();
+				stage.close();
+				patientLoginGUI.start(new Stage());
+			}
 		});
 
 		newPatient.setOnAction(e -> createAccount(stage));
@@ -104,16 +115,20 @@ public class PatientLogin {
 		gridPane.add(confirmPasswordField, 1, 3);
 
 		createAccBtn.setOnAction(event -> {
-			System.out.println("create acc btn clicked");
-			if (nameLabel.getText().isEmpty() || DOBLabel.getText().isEmpty() || passwordLabel.getText().isEmpty()
-					|| confirmPasswordLabel.getText().isEmpty()) {
+			if (nameField.getText().isEmpty() || DOBField.getText().isEmpty() || passwordField.getText().isEmpty()
+					|| confirmPasswordField.getText().isEmpty()) {
 				errorLabel.setStyle("-fx-text-fill: red;");
 				errorLabel.setText("Error! One or more fields are empty");
+			} else if (!(passwordField.getText().equals(confirmPasswordField.getText()))) {
+				errorLabel.setStyle("-fx-text-fill: red;");
+				errorLabel.setText("Error! passwords do not match");
 			} else if (searchPatient(nameField.getText(), DOBField.getText())) {
 				writeToFile(nameField.getText(), DOBField.getText(), passwordField.getText());
-			}
-			else {
-				System.out.println("didnt happen");
+				errorLabel.setStyle("-fx-text-fill: black;");
+				errorLabel.setText("Account Created");
+			} else {
+				errorLabel.setStyle("-fx-text-fill: red;");
+				errorLabel.setText("Error! a patient with your info does not exist");
 			}
 
 		});
@@ -123,7 +138,7 @@ public class PatientLogin {
 		gridPane.setVgap(10);
 		container.setSpacing(20);
 		container.setAlignment(Pos.TOP_CENTER);
-		container.getChildren().addAll(gridPane, createAccBtn);
+		container.getChildren().addAll(gridPane, errorLabel, createAccBtn);
 		root.setPadding(new javafx.geometry.Insets(20));
 		root.getChildren().add(container);
 		stage.setScene(scene);
@@ -132,21 +147,15 @@ public class PatientLogin {
 	}
 
 	boolean searchPatient(String name, String DOB) {
-		System.out.println("in here");
 		String str = name + DOB;
 		str = str.replaceAll("\s", "");
 		str = str.replaceAll("/", "");
 		String patientID = str + "_login";
 		String directoryPath = "src/PatientLogins/";
-		
-		System.out.println("The path is: " + directoryPath);
-		System.out.println("The patient id is: " + patientID);
 
 		// Create a File object representing the directory
 		File directory = new File(directoryPath);
-		System.out.println("directory.exists()" + directory.exists());
-		System.out.println("directory.isDirectory()" + directory.isDirectory());
-		
+
 		// Verify that the specified path exists and is a directory
 		if (directory.exists() && directory.isDirectory()) {
 			// Get a list of files in the directory
@@ -154,16 +163,14 @@ public class PatientLogin {
 
 			// Iterate through the files
 			for (File file : files) {
-				System.out.println("The file name: " + file.getName());
 				if (file.isFile() && file.getName().equals(patientID)) {
-					System.out.println("found patient");
 					return checkUser(file);
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	private boolean checkUser(File patientFile) {
 		String line = "";
 		try {
@@ -175,33 +182,83 @@ public class PatientLogin {
 		}
 
 		String[] arr = line.split(",");
-		
-		if(arr.length >= 2) {
-			System.out.println("return false");
+
+		if (arr.length >= 2) {
 			return false; // patient already exists
-		}
-		else {
-			System.out.println("return true");
+		} else {
 			return true; // patient does NOT exists
 		}
 	}
-	
+
+	private boolean seachPatientAccount(String patientID, String password) {
+		String directoryPath = "src/PatientLogins/";
+		String line = "";
+		// Create a File object representing the directory
+		File directory = new File(directoryPath);
+		File patientFile = null;
+
+		String patientFileName = patientID + "_login";
+
+		// Verify that the specified path exists and is a directory
+		if (directory.exists() && directory.isDirectory()) {
+			// Get a list of files in the directory
+			File[] files = directory.listFiles();
+
+			// Iterate through the files
+			for (File file : files) {
+				if (file.isFile() && file.getName().equals(patientFileName)) {
+					// break if patient exists
+					System.out.println("patient exists");
+					patientFile = file;
+					break;
+				}
+			}
+		}
+
+		if (patientFile == null) {
+			System.out.println("is null???");
+			return false; // patient does not exist
+		}
+
+		// **Authenticate patient userID and password **//
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(patientFile));
+			line = reader.readLine();
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String[] arr = line.split(",");
+
+		System.out.println("The arry has" + arr[0] + " " + arr[1]);
+
+		if (arr.length >= 2 && arr[0].equals(patientID) && arr[1].equals(password)) {// patient exists
+			return true;
+		}
+		return false;
+	}
+
 	private void writeToFile(String name, String DOB, String password) {
 		System.out.println(name + " " + DOB + " " + password);
 		String str = name + DOB;
 		str = str.replaceAll("\s", "");
 		str = str.replaceAll("/", "");
 		String filePath = "src/PatientLogins/" + str + "_login";
-		
+
 		System.out.println(str);
 		System.out.println(filePath);
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
-			writer.write("," + password);
+			writer.write("," + password + ",");
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getID() {
+		return userID;
 	}
 }
