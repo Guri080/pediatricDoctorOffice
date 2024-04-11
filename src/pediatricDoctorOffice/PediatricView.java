@@ -86,7 +86,7 @@ public class PediatricView {
         
         /*-----EVENT HANDLERS--------------------------------------------------------------------------*/
         
-        sendMessageButton.setOnAction(e -> NewMessageWindow.display());
+        sendMessageButton.setOnAction(e -> new PediatricMessagingWindow().display());
         
         searchButton.setOnAction(event -> {
         	if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty() || birthDateField.getText().trim().isEmpty()) {
