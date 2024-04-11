@@ -46,10 +46,11 @@ public class PatientPortal {
         
         Button messageButton = new Button("Message");
         messageButton.setFont(largeFont);
+        messageButton.setOnAction(e -> new MessagingWindow().display());
         HBox topRightBox = new HBox(messageButton);
         topRightBox.setAlignment(Pos.TOP_RIGHT);
-        topRightBox.setPadding(new Insets(10)); // Adjust padding as needed
-
+        topRightBox.setPadding(new Insets(10));
+        
         /*------------PATIENT INFORMATION---------------------------------------------------------*/
         
         VBox patientInfoBox = new VBox(5);
@@ -77,6 +78,9 @@ public class PatientPortal {
         visitEntry.getChildren().addAll(dateLabel, viewVisitButton);
         visitsBox.getChildren().add(visitEntry);
         centerContent.getChildren().addAll(intro, patientInfoBox, scrollPane);
+        
+        /*------------MESSAGES BUTTON OPENS NEW PAGE--------------------------------------------------------*/
+        
 
         root.setTop(topRightBox);
         root.setCenter(centerContent);
