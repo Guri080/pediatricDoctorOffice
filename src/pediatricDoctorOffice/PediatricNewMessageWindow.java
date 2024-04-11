@@ -39,7 +39,8 @@ public class PediatricNewMessageWindow {
 			window.close();
 
 		});
-
+		
+		// layouts
 		VBox layout = new VBox(10);
 		layout.setPadding(new Insets(20));
 		layout.getChildren().addAll(toField, messageContent, sendButton);
@@ -47,21 +48,18 @@ public class PediatricNewMessageWindow {
 		Scene scene = new Scene(layout, 400, 250);
 		window.setScene(scene);
 		window.showAndWait();
-
 	}
-
+	
+	// write message/email to the patient
 	private static void writeMessageToFile(String message) {
 		PediatricMessagingWindow pID = new PediatricMessagingWindow();
 		String patientID = pID.userID();
-		String directory = "src/PatientLogins/" + patientID + "_login";
+		String directory = "src/PatientLogins/" + patientID + "_login"; // patient directory
 		message = "\nDoctor: " + message + "\n";
-
-		System.out.println(message);
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(directory, true));
-			System.out.println("writing in: " + directory);
-			writer.write(message);
+			writer.write(message); // write message to the file
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();

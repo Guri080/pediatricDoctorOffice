@@ -35,11 +35,11 @@ public class addNewVisitView {
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setScene(scene);
-		Font largeBoldFont = Font.font("Ari" + "al", FontWeight.BOLD, 30);
 		Font largeFont = Font.font("Arial", 15);
 		VBox setUp = new VBox();
 
 		/*---------------------------------------------------------------------------------------*/
+		// making nodes
 		Button newPatient = new Button("New Patient");
 		Button oldPatient = new Button("Exisiting Patient");
 		Button logOutBtn = new Button("Log out");
@@ -48,77 +48,73 @@ public class addNewVisitView {
 		oldPatient.setFont(largeFont);
 
 		/*---------------------------------------------------------------------------------------*/
-		newPatient.setOnAction(e -> newPatient(stage));
-		oldPatient.setOnAction(e -> existingPatient(stage));
+		newPatient.setOnAction(e -> newPatient(stage)); // if its a new patient
+		oldPatient.setOnAction(e -> existingPatient(stage)); // if its an existing patient
 
-		logOutBtn.setOnAction(event -> {
-			PediatricDoctorOffice mainScreen = new PediatricDoctorOffice();			
-		});
-
+		// node spacing and alignment
 		setUp.setSpacing(25);
 		setUp.setAlignment(Pos.CENTER);
 		setUp.getChildren().addAll(newPatient, oldPatient);
 		root.getChildren().add(setUp);
 		stage.show();
 	}
+
 	void newPInit(String bday, String name, String height, String temp, String age, String bp, String date, String nn) {
-		String str = name + bday;
-		str = str.replaceAll("\\s", "");
-		str = str.replaceAll("/", "");
-		nn = nn.replaceAll(",", "");
+		String str = name + bday; // raw patient ID
+		str = str.replaceAll("\\s", ""); // remove all spaces from the patient ID
+		str = str.replaceAll("/", ""); // remove all '/' from the patient ID
+		nn = nn.replaceAll(",", ""); // remove all the ',' from the patient ID
+
 		String patientID = str;
-		str = "src/PatientData/" + str + "_data";
-		String nstr = "src/PatientLogins/" + patientID + "_login";
-		
-		String patientD = date + "," +height + "," + temp + "," + age + "," + bp + "," + nn;
-		
+		str = "src/PatientData/" + str + "_data"; // file path for data file
+		String nstr = "" + "src/PatientLogins/" + patientID + "_login"; // file login file
+
+		String patientD = date + "," + height + "," + temp + "," + age + "," + bp + "," + nn;
+
+		// write patientID to the data file
 		try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(str));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            writer.write(patientD);
-            //pwriter.write(patientID);
-            writer.close();
-            //pwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+			BufferedWriter writer = new BufferedWriter(new FileWriter(str));
+			writer.write(patientD);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// write patientID to the login file
 		try {
-            BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            pwriter.write(patientID);
-            //pwriter.write(patientID);
-            pwriter.close();
-            //pwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
+			pwriter.write(patientID);
+			// pwriter.write(patientID);
+			pwriter.close();
+			// pwriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	private Boolean searchPatient(String patientID) {
-        // Specify the directory containing the text files
-        String directoryPath = "src/patientDataFile";
+		// Specify the directory containing the text files
+		String directoryPath = "src/patientDataFile";
 
-        // Create a File object representing the directory
-        File directory = new File(directoryPath);
+		// Create a File object representing the directory
+		File directory = new File(directoryPath);
 
-        // Verify that the specified path exists and is a directory
-        if (directory.exists() && directory.isDirectory()) {
-            // Get a list of files in the directory
-            File[] files = directory.listFiles();
+		// Verify that the specified path exists and is a directory
+		if (directory.exists() && directory.isDirectory()) {
+			// Get a list of files in the directory
+			File[] files = directory.listFiles();
 
-            // Iterate through the files
-            for (File file : files) {
-                if (file.isFile() && file.getName().substring(0, 5).equals(patientID)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-	
-	
+			// Iterate through the files
+			for (File file : files) {
+				if (file.isFile() && file.getName().substring(0, 5).equals(patientID)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
+	// when new patient button is clicked this GUI is opened
 	void newPatient(Stage oldStage) {
 		oldStage.close();
 		Stage stage = new Stage();
@@ -137,25 +133,27 @@ public class addNewVisitView {
 		Label nurseNotesLabel = new Label("Nurse Notes: ");
 		Label errorLabel = new Label("");
 		Label dateLabel = new Label("Enter date of visit (mm/dd/yyyy): ");
-		
+
+		// textFields
 		TextField nameField = new TextField();
 		TextField bdayField = new TextField();
 		TextField heightField = new TextField();
 		TextField ageField = new TextField();
 		TextField bodyTempIDField = new TextField();
 		TextField bloodPressureField = new TextField();
-		TextField nurseNotesField = new TextField(); 
+		TextField nurseNotesField = new TextField();
 		TextField dateField = new TextField();
-		
 
+		// Buttons
 		Button saveBtn = new Button("Save");
 		Button backBtn = new Button("Go back");
-		
-		
+
 		/*---------------------------------------------------------------------------------------*/
 		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
 			try {
-				if (heightField.getText().isEmpty() || dateField.getText().isEmpty()||bdayField.getText().isEmpty() || nameField.getText().isEmpty() ||bodyTempIDField.getText().isEmpty()|| bloodPressureField.getText().isEmpty()) {
+				if (heightField.getText().isEmpty() || dateField.getText().isEmpty() || bdayField.getText().isEmpty()
+						|| nameField.getText().isEmpty() || bodyTempIDField.getText().isEmpty()
+						|| bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! One or more fields are empty");
 				} else if (Double.parseDouble(ageField.getText()) < 12) {
@@ -163,14 +161,14 @@ public class addNewVisitView {
 					errorLabel.setText("Error! The age should be more than 12");
 				} else {
 					String bday = bdayField.getText();
-					String name = nameField.getText(); 
+					String name = nameField.getText();
 					String height = heightField.getText();
 					String temp = bodyTempIDField.getText();
 					String age = ageField.getText();
 					String bp = bloodPressureField.getText();
 					String nn = nurseNotesField.getText();
 					String date = dateField.getText().replaceAll("/", "");
-					newPInit(bday, name, height, temp, age, bp, date,nn);//**
+					newPInit(bday, name, height, temp, age, bp, date, nn);// **
 					heightField.clear();
 					ageField.clear();
 					bodyTempIDField.clear();
@@ -193,10 +191,10 @@ public class addNewVisitView {
 				e.printStackTrace();
 			}
 		});
-		
-		gridPane.add(nameLabel,0, 1);
-		gridPane.add(nameField, 1,1);
-		gridPane.add(bdayLabel,  0, 2);
+
+		gridPane.add(nameLabel, 0, 1);
+		gridPane.add(nameField, 1, 1);
+		gridPane.add(bdayLabel, 0, 2);
 		gridPane.add(bdayField, 1, 2);
 		gridPane.add(heightLabel, 0, 3);
 		gridPane.add(heightField, 1, 3);
@@ -210,8 +208,6 @@ public class addNewVisitView {
 		gridPane.add(nurseNotesField, 1, 7);
 		gridPane.add(dateLabel, 0, 8);
 		gridPane.add(dateField, 1, 8);
-//		gridPane.add(insuranceIDLabel, 0, 5);
-//		gridPane.add(insuranceIDText, 1, 5);
 
 		gridPane.setAlignment(Pos.CENTER_LEFT);
 		gridPane.setHgap(10);
@@ -259,7 +255,8 @@ public class addNewVisitView {
 		/*---------------------------------------------------------------------------------------*/
 		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
 			try {
-				if (nameField.getText().isEmpty()||nurseNotesField.getText().isEmpty() ||bdayField.getText().isEmpty() || heightField.getText().isEmpty()
+				if (nameField.getText().isEmpty() || nurseNotesField.getText().isEmpty()
+						|| bdayField.getText().isEmpty() || heightField.getText().isEmpty()
 						|| bodyTempIDField.getText().isEmpty() || bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! One or more fields are empty");
@@ -275,7 +272,7 @@ public class addNewVisitView {
 					String bp = bloodPressureField.getText();
 					String nn = nurseNotesField.getText();
 					String date = dateField.getText().replaceAll("/", "");
-					existingPVisit(bday, name, height,temp, age, bp, nn, date, errorLabel);
+					existingPVisit(bday, name, height, temp, age, bp, nn, date, errorLabel);
 					heightField.clear();
 					ageField.clear();
 					bodyTempIDField.clear();
@@ -298,7 +295,9 @@ public class addNewVisitView {
 				e.printStackTrace();
 			}
 		});
-
+		
+		
+		// insert all the labels and fields
 		gridPane.add(nameLabel, 0, 0);
 		gridPane.add(nameField, 1, 0);
 		gridPane.add(bdayLabel, 0, 1);
@@ -315,7 +314,8 @@ public class addNewVisitView {
 		gridPane.add(nurseNotesField, 1, 7);
 		gridPane.add(dateLabel, 0, 8);
 		gridPane.add(dateField, 1, 8);
-
+		
+		// set pane alignments and spacing
 		gridPane.setAlignment(Pos.CENTER_LEFT);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
@@ -328,25 +328,28 @@ public class addNewVisitView {
 		stage.show();
 	}
 	
-	void existingPVisit(String bday, String name, String height, String temp, String age, String bp,String nn,String date,Label eL) {
+	
+	// if a patient is re-visting this GUI is opened
+	void existingPVisit(String bday, String name, String height, String temp, String age, String bp, String nn,
+			String date, Label eL) {
 		String str = name + bday;
 		str = str.replaceAll("\\s", "");
 		str = str.replaceAll("/", "");
 		nn = nn.replaceAll(",", "");
-		
+
 		str = "src/PatientData/" + str + "_data";
-		
+
 		String patientD = date + "," + height + "," + temp + "," + age + "," + bp + "," + nn;
-		
+
 		try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(str, true));
-            writer.write("\n" + patientD);
-            System.out.println("written");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+			BufferedWriter writer = new BufferedWriter(new FileWriter(str, true));
+			writer.write("\n" + patientD);
+			System.out.println("written");
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

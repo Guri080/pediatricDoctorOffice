@@ -36,11 +36,6 @@ public class NewMessageWindow {
 
 		Button sendButton = new Button("Send");
 		sendButton.setOnAction(event -> {
-
-//			if (toField.getText().isEmpty() || messageContent.getText().isEmpty()) { // check if all boxes are filled
-//				messageContent.setStyle("-fx-text-fill: red;");
-//				messageContent.setPromptText("one of your field is empty");
-//			} else { // write message
 			messageContent.setPromptText("");
 			writeMessageToFile(messageContent.getText());
 
@@ -60,11 +55,11 @@ public class NewMessageWindow {
 
 	private static void writeMessageToFile(String message) {
 		PatientLogin pID = new PatientLogin();
-		String directory = "src/PatientLogins/" + pID.getpID() + "_login";
+		String directory = "src/PatientLogins/" + pID.getID() + "_login";
 		message = "\nPatient: " + message + "\n";
-		
+
 		System.out.println(message);
-		
+
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(directory, true));
 			System.out.println("writing in: " + directory);
