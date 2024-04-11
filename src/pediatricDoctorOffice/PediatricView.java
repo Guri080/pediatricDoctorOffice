@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -55,7 +56,13 @@ public class PediatricView {
         Button searchButton = new Button("Search");
         searchButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         
-        topSection.getChildren().addAll(titleLabel, firstNameField, lastNameField, birthDateField, searchButton);
+        Button sendMessageButton = new Button("Send Message");
+        sendMessageButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        
+        HBox searchAndMessageButtons = new HBox(10, searchButton, sendMessageButton);
+        searchAndMessageButtons.setAlignment(Pos.CENTER);
+        
+        topSection.getChildren().addAll(titleLabel, firstNameField, lastNameField, birthDateField, searchAndMessageButtons);
         
         /*-----PATIENT INFORMATION--------------------------------------------------------------------------*/
         TextArea patientInfoArea = new TextArea();
@@ -76,6 +83,8 @@ public class PediatricView {
         bottomSection.getChildren().addAll(prescriptionField, prescribeButton);
         
         /*-----EVENT HANDLERS--------------------------------------------------------------------------*/
+        
+        sendMessageButton.setOnAction(e -> NewMessageWindow.display());
         
         searchButton.setOnAction(event -> {
             String name = firstNameField.getText() + lastNameField.getText();
