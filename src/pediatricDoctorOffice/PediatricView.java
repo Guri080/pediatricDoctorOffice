@@ -42,9 +42,13 @@ public class PediatricView {
         BorderPane.setAlignment(titleLabel, Pos.CENTER);
 
         /*-----TOP SECTION--------------------------------------------------------------------------*/
+
         VBox topSection = new VBox(10);
-        topSection.setAlignment(Pos.CENTER);
         topSection.setPadding(new Insets(10));
+        
+        Button logoutButton = new Button("Logout");
+        logoutButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        topSection.getChildren().add(logoutButton);
         
         TextField firstNameField = new TextField();
         firstNameField.setPromptText("First Name");
@@ -85,6 +89,17 @@ public class PediatricView {
         bottomSection.getChildren().addAll(prescriptionField, prescribeButton);
         
         /*-----EVENT HANDLERS--------------------------------------------------------------------------*/
+        
+        logoutButton.setOnAction(event -> {
+            stage.close();
+            PediatricDoctorOffice doctorOffice = new PediatricDoctorOffice();
+            try {
+                doctorOffice.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         
         sendMessageButton.setOnAction(e -> NewMessageWindow.display());
         

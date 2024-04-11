@@ -132,7 +132,7 @@ public class addNewVisitView {
 		Label bdayLabel = new Label("Enter Birthday (mm/dd/yyyy): ");
 		Label heightLabel = new Label("Enter height (cm): ");
 		Label ageLabel = new Label("Enter age: ");
-		Label bodyTempIDLabel = new Label("Enter body temprature: ");
+		Label bodyTempIDLabel = new Label("Enter body temperature: ");
 		Label bloodPressureLabel = new Label("Enter blood pressure: ");
 		Label nurseNotesLabel = new Label("Nurse Notes: ");
 		Label errorLabel = new Label("");

@@ -30,9 +30,7 @@ public class PediatricDoctorOffice extends Application {
 		launch(args);
 	}
 
-	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setTitle("Hospital");
