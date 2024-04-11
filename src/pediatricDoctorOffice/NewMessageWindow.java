@@ -13,32 +13,31 @@ import javafx.stage.Stage;
 public class NewMessageWindow {
 
     public static void display() {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Send New Message");
+        Stage window = new Stage(); // Creates a new stage for the window
+        window.initModality(Modality.APPLICATION_MODAL); // Sets the window to block input events to other windows
+        window.setTitle("Send New Message"); // Sets the title of the window
         
-        /*------------TO WHO--------------------------------------------------------------*/
-
+        // TextField for entering the message recipient
         TextField toField = new TextField();
         toField.setPromptText("Recipient");
 
-        /*---------MESSAGE CONTENT----------------------------------------------------------------*/
-        
+        // TextArea for entering the message content
         TextArea messageContent = new TextArea();
         messageContent.setPromptText("Write your message here");
 
-        /*---------SEND BUTTON---------------------------------------------------------*/
-        
+       // Button to send the message
         Button sendButton = new Button("Send");
         sendButton.setOnAction(event -> {
             System.out.println("send button clicked");
-            window.close();
+            window.close(); // Closes the window after clicking send
         });
 
+        // Layout setup
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
         layout.getChildren().addAll(toField, messageContent, sendButton);
 
+        // Scene setup
         Scene scene = new Scene(layout, 400, 250);
         window.setScene(scene);
         window.showAndWait();
