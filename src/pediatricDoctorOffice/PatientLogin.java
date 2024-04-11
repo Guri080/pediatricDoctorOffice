@@ -1,6 +1,6 @@
 package pediatricDoctorOffice;
 
-// Import statements for necessary JavaFX and IO components.
+// Imports
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
