@@ -36,7 +36,8 @@ public class PatientLogin {
 
 		VBox setUp = new VBox();
 
-		/*-----EMPLOYEE LOGIN PAGE------------------------------------------------------------------------------*/
+		/*-----PATIENT LOGIN PAGE------------------------------------------------------------------------------*/
+		//Setting up the user interface for the login page consisting of username, password, log in, and create an account.
 		Label loginLabel = new Label("Patient Login");
 		Label userNameLabel = new Label("Username:");
 		Label errorLabel = new Label("");
@@ -55,7 +56,10 @@ public class PatientLogin {
 		passwordTextField.setMaxWidth(160);
 
 		loginBtn.setFont(largeFont);
-		/*-----------------------------------------------------------------------------------------------------*/
+		
+		/*-----EVENT HANDLING------------------------------------------------------------------------------------------------*/
+		//When login button is clicked it will check if the fields are empty and throw an error. Otherwise, it will open them up into a new window.
+		
 		loginBtn.setOnAction(event -> { // when patient login button is clicked
 			PatientPortal patientLoginGUI = new PatientPortal();
 
@@ -71,6 +75,8 @@ public class PatientLogin {
 			}
 		});
 
+		//When createAccount is pressed, a new patient screen shows up where the user can create an account.
+
 		newPatient.setOnAction(e -> createAccount(stage));
 
 		setUp.setPadding(new Insets(80));
@@ -82,7 +88,11 @@ public class PatientLogin {
 		stage.show();
 	}
 
+	/*-----CREATE ACCOUNT------------------------------------------------------------------------------------------------*/
+
 	void createAccount(Stage oldStage) {
+		//Setting up main interface
+		
 		System.out.println("button clicked");
 		oldStage.close();
 		Stage stage = new Stage();
@@ -113,6 +123,8 @@ public class PatientLogin {
 		gridPane.add(passwordField, 1, 2);
 		gridPane.add(confirmPasswordLabel, 0, 3);
 		gridPane.add(confirmPasswordField, 1, 3);
+
+		//Event handling for when create account button is pressed. Will also throw an error if a patient with the info does not exist in the system yet
 
 		createAccBtn.setOnAction(event -> {
 			if (nameField.getText().isEmpty() || DOBField.getText().isEmpty() || passwordField.getText().isEmpty()
@@ -146,6 +158,8 @@ public class PatientLogin {
 
 	}
 
+	//Searching for patient in files
+
 	boolean searchPatient(String name, String DOB) {
 		String str = name + DOB;
 		str = str.replaceAll("\s", "");
@@ -171,6 +185,8 @@ public class PatientLogin {
 		return false;
 	}
 
+	//Checking to see if the user exists or not
+
 	private boolean checkUser(File patientFile) {
 		String line = "";
 		try {
@@ -189,6 +205,8 @@ public class PatientLogin {
 			return true; // patient does NOT exists
 		}
 	}
+
+	//Searching to find the user and password to compare
 
 	private boolean seachPatientAccount(String patientID, String password) {
 		String directoryPath = "src/PatientLogins/";
@@ -240,6 +258,8 @@ public class PatientLogin {
 		return false;
 	}
 
+	//Writing the information to the patient's database file
+
 	private void writeToFile(String name, String DOB, String password) {
 		System.out.println(name + " " + DOB + " " + password);
 		String str = name + DOB;
@@ -258,6 +278,8 @@ public class PatientLogin {
 			e.printStackTrace();
 		}
 	}
+
+	//additional methods
 	
 	private void setpID(String in) {
 		pID = in;
