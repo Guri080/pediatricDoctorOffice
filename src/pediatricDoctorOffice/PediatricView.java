@@ -1,7 +1,9 @@
 package pediatricDoctorOffice;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,10 +58,6 @@ public class PediatricView {
         Button searchButton = new Button("Search");
         searchButton.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         searchButton.setMaxWidth(Double.MAX_VALUE);
-        
-        
-        
-
         inputFields.getChildren().addAll(firstNameField, lastNameField, birthDateField, searchButton);
 
         /*-----RIGHT SIDE - VISITS & NURSE NOTES--------------------------------------------------------------------------*/
@@ -70,7 +68,7 @@ public class PediatricView {
 
         TextArea visitsArea = new TextArea();
         visitsArea.setPromptText("Visits");
-        visitsArea.setEditable(false); // If you want to make it non-editable
+        visitsArea.setEditable(false); 
 
         TextArea nurseNotesArea = new TextArea();
         nurseNotesArea.setPromptText("Nurse Notes from the most recent view");
@@ -107,9 +105,30 @@ public class PediatricView {
             //gets here properly with correct pID
             patientExists = searchPatient(pID);
             
-            
-            
-            
+            //populate the visits and nurse info boxes
+            if(patientExists) {      
+            	visitsArea.clear();
+            	System.out.println("patient exists: " + pID);
+            	String fp = "src\\PatientData\\" + pID + "_data";
+            	
+            	try{
+            		FileReader reader  = new FileReader(fp);
+            		BufferedReader r = new BufferedReader(reader);
+            		String line;
+            		
+            		
+            		while((line = r.readLine()) != null) {
+            			line = reformat(line);
+            			System.out.println(line);
+            			visitsArea.appendText(line + "\n");
+            			
+            		}		
+            	}
+            	
+            	catch(IOException e){
+            		e.printStackTrace();
+            	}
+            }  
         });
         
         prescribeButton.setOnAction(event -> {
@@ -119,17 +138,16 @@ public class PediatricView {
             try {
             	if(patientExists) {
             		FileWriter writer = new FileWriter("src/PatientData/" + pID + "_data", true);    
-            		writer.write("," + prescription);
+            		writer.write(",Prescription: " + prescription);
+            		
             		writer.close();
             	}else {
-            		//System.out.println("patient not found :(" + pID);
-            		//error out
-
             	}
 	
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            searchButton.fire();
         });
 
         inputFields.getChildren().addAll(prescriptionField, prescribeButton);
@@ -166,5 +184,19 @@ public class PediatricView {
             }
         }
         return false;
+    }
+    
+    private String reformat(String line) {
+    	String[] input = line.split(",");
+    	String[] titles = {"Visit Date: ", "Height: ", "Temperature: ", "Age: ", "Blood Pressure: ", "Nurse Notes: ", ""};
+    	String output = "";
+    	for(int i = 0; i < input.length; i++) {
+    		if(i < titles.length) {
+    			input[i] = titles[i] + input[i] + " ";
+    		}
+    		
+    		output += input[i];
+    	}
+    	return output;
     }
 }
