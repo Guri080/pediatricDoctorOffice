@@ -1,5 +1,6 @@
 package pediatricDoctorOffice;
 
+// Import statements for JavaFX components required for creating the GUI
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
