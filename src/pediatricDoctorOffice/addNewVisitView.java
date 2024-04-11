@@ -1,5 +1,6 @@
 package pediatricDoctorOffice;
 
+//Imports
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,30 +28,30 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 
+// addNewVisitView class
 public class addNewVisitView {
-	public static final int WIDTH = 700, HEIGHT = 450;
+	public static final int WIDTH = 700, HEIGHT = 450; // Set window size.
 
 	public void start(Stage stage) {
-		stage.setTitle("Employee Login");
+		// Window setup.
+		stage.setTitle("Add New Visit");
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		stage.setScene(scene);
 		Font largeBoldFont = Font.font("Ari" + "al", FontWeight.BOLD, 30);
 		Font largeFont = Font.font("Arial", 15);
-		VBox setUp = new VBox();
 
-		/*---------------------------------------------------------------------------------------*/
+		// UI elements initialization.
+		VBox setUp = new VBox();
 		Button newPatient = new Button("New Patient");
 		Button oldPatient = new Button("Exisiting Patient");
 		Button logOutBtn = new Button("Log out");
-
 		newPatient.setFont(largeFont);
 		oldPatient.setFont(largeFont);
 
-		/*---------------------------------------------------------------------------------------*/
+		// Button event handlers.
 		newPatient.setOnAction(e -> newPatient(stage));
 		oldPatient.setOnAction(e -> existingPatient(stage));
-
 		logOutBtn.setOnAction(event -> {
 			PediatricDoctorOffice mainScreen = new PediatricDoctorOffice();			
 		});
@@ -62,6 +63,7 @@ public class addNewVisitView {
 		stage.show();
 	}
 	void newPInit(String bday, String name, String height, String temp, String age, String bp, String date, String nn) {
+		// Concatenate name and birthday, remove spaces and slashes
 		String str = name + bday;
 		str = str.replaceAll("\\s", "");
 		str = str.replaceAll("/", "");
@@ -69,30 +71,23 @@ public class addNewVisitView {
 		String patientID = str;
 		str = "src/PatientData/" + str + "_data";
 		String nstr = "src/PatientLogins/" + patientID + "_login";
-		
+
+		// Write into the patient's data file.
 		String patientD = date + "," +height + "," + temp + "," + age + "," + bp + "," + nn;
-		
-		try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(str));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            writer.write(patientD);
-            //pwriter.write(patientID);
-            writer.close();
-            //pwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
-		try {
-            BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            //BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
-            pwriter.write(patientID);
-            //pwriter.write(patientID);
-            pwriter.close();
-            //pwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try { // Write patient data to the specified file.
+           		BufferedWriter writer = new BufferedWriter(new FileWriter(str));
+            		writer.write(patientD);
+            		writer.close();
+       		 } catch (IOException e) {
+           		 e.printStackTrace();
+       		 }
+		try { // Create or update the login file for the patient.
+           		BufferedWriter pwriter = new BufferedWriter(new FileWriter(nstr));
+           		pwriter.write(patientID);
+            		pwriter.close();
+        	} catch (IOException e) {
+           		 e.printStackTrace();
+       		 }
 	}
 	
 	private Boolean searchPatient(String patientID) {
@@ -125,9 +120,11 @@ public class addNewVisitView {
 		stage.initOwner(null);
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
+		
 		VBox container = new VBox();
 		GridPane gridPane = new GridPane();
-		// weight, height, body temperature, and blood pressure,
+		
+		// Weight, height, body temperature, and blood pressure labels
 		Label nameLabel = new Label("Enter Name (firstname lastname): ");
 		Label bdayLabel = new Label("Enter Birthday (mm/dd/yyyy): ");
 		Label heightLabel = new Label("Enter height (cm): ");
@@ -137,7 +134,8 @@ public class addNewVisitView {
 		Label nurseNotesLabel = new Label("Nurse Notes: ");
 		Label errorLabel = new Label("");
 		Label dateLabel = new Label("Enter date of visit (mm/dd/yyyy): ");
-		
+
+		// Textfields for patient information.
 		TextField nameField = new TextField();
 		TextField bdayField = new TextField();
 		TextField heightField = new TextField();
@@ -147,14 +145,14 @@ public class addNewVisitView {
 		TextField nurseNotesField = new TextField(); 
 		TextField dateField = new TextField();
 		
-
+		// Button to save new patient info.
 		Button saveBtn = new Button("Save");
+		// Button to return to the previous screen.
 		Button backBtn = new Button("Go back");
-		
-		
-		/*---------------------------------------------------------------------------------------*/
-		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
-			try {
+
+		// Action to save new patient information.
+		saveBtn.setOnAction(event -> { 
+			try {  // Validate input fields are not empty.
 				if (heightField.getText().isEmpty() || dateField.getText().isEmpty()||bdayField.getText().isEmpty() || nameField.getText().isEmpty() ||bodyTempIDField.getText().isEmpty()|| bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
 					errorLabel.setText("Error! One or more fields are empty");
@@ -178,13 +176,13 @@ public class addNewVisitView {
 					errorLabel.setStyle("-fx-text-fill: black;");
 					errorLabel.setText("Information added");
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
 
-		backBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
+		// Action to return to the previous screen without saving.
+		backBtn.setOnAction(event -> { 
 			stage.close();
 			addNewVisitView mainScreen = new addNewVisitView();
 			try {
@@ -194,6 +192,7 @@ public class addNewVisitView {
 			}
 		});
 		
+		// Layout setup for form fields using GridPane.
 		gridPane.add(nameLabel,0, 1);
 		gridPane.add(nameField, 1,1);
 		gridPane.add(bdayLabel,  0, 2);
@@ -210,8 +209,6 @@ public class addNewVisitView {
 		gridPane.add(nurseNotesField, 1, 7);
 		gridPane.add(dateLabel, 0, 8);
 		gridPane.add(dateField, 1, 8);
-//		gridPane.add(insuranceIDLabel, 0, 5);
-//		gridPane.add(insuranceIDText, 1, 5);
 
 		gridPane.setAlignment(Pos.CENTER_LEFT);
 		gridPane.setHgap(10);
@@ -225,6 +222,7 @@ public class addNewVisitView {
 		stage.show();
 	}
 
+	// Method for adding a visit to an existing patient.
 	void existingPatient(Stage oldStage) {
 		oldStage.close();
 		Stage stage = new Stage();
@@ -233,7 +231,8 @@ public class addNewVisitView {
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		VBox container = new VBox();
 		GridPane gridPane = new GridPane();
-		// weight, height, body temperature, and blood pressure,
+		
+		// Weight, height, body temperature, and blood pressure labels
 		Label nameLabel = new Label("Enter Name (firstname lastname): ");
 		Label bdayLabel = new Label("Enter Birthday (mm/dd/yyyy): ");
 		Label heightLabel = new Label("Enter height (cm): ");
@@ -244,6 +243,7 @@ public class addNewVisitView {
 		Label errorLabel = new Label("");
 		Label dateLabel = new Label("Enter date of visit (mm/dd/yyyy): ");
 
+		// Textfields for patient information.
 		TextField nameField = new TextField();
 		TextField bdayField = new TextField();
 		TextField heightField = new TextField();
@@ -253,12 +253,14 @@ public class addNewVisitView {
 		TextField nurseNotesField = new TextField();
 		TextField dateField = new TextField();
 
-		Button backBtn = new Button("Go back");
+		// Button to save new patient info.
 		Button saveBtn = new Button("Save");
-
-		/*---------------------------------------------------------------------------------------*/
-		saveBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
-			try {
+		// Button to return to the previous screen.
+		Button backBtn = new Button("Go back");
+		
+		// Action to save new patient information.
+		saveBtn.setOnAction(event -> { 
+			try {// Validate input fields are not empty.
 				if (nameField.getText().isEmpty()||nurseNotesField.getText().isEmpty() ||bdayField.getText().isEmpty() || heightField.getText().isEmpty()
 						|| bodyTempIDField.getText().isEmpty() || bloodPressureField.getText().isEmpty()) {
 					errorLabel.setStyle("-fx-text-fill: red;");
@@ -283,12 +285,12 @@ public class addNewVisitView {
 					errorLabel.setStyle("-fx-text-fill: black;");
 					errorLabel.setText("Information added");
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
 
+		// Action to return to the previous screen without saving.
 		backBtn.setOnAction(event -> { // when employee info is filled and log in is clicked
 			stage.close();
 			addNewVisitView mainScreen = new addNewVisitView();
@@ -299,6 +301,7 @@ public class addNewVisitView {
 			}
 		});
 
+		// Layout setup for form fields using GridPane.
 		gridPane.add(nameLabel, 0, 0);
 		gridPane.add(nameField, 1, 0);
 		gridPane.add(bdayLabel, 0, 1);
@@ -327,7 +330,8 @@ public class addNewVisitView {
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
+	 // Adds a new visit for an existing patient.
 	void existingPVisit(String bday, String name, String height, String temp, String age, String bp,String nn,String date,Label eL) {
 		String str = name + bday;
 		str = str.replaceAll("\\s", "");
